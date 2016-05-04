@@ -39,6 +39,7 @@ library(dplyr)
 library(ggplot2)
 ```
 
+***
 
 # Dynamic Documents  
 
@@ -50,9 +51,115 @@ library(ggplot2)
 In dynamic documents, program or analysis code is run to produce output (e.g. tables, plots, models, etc) and then are explained through narrative writing. 
 
 
+***
+
+***
+
+
+
+# Markdown
+
+To fully understand RMarkdown, we first need to cover <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, which is a system for writing simple, readable text that is easily converted to html.  Markdown essentially is two things:  
+
+1. A plain text formatting syntax  
+2. A software tool written in Perl.  
+    - Converts the plain text formatting into HTML.  
+    
+>**Main goal of Markdown:**  
+> Make the syntax of the raw (pre-html) document as readable possible. 
+
+Would you rather read this?  
+```html
+<body>
+  <section>
+    <h1>Rock Climbing Packing List</h1>
+    <ul>
+      <li>Climbing Shoes</li>
+      <li>Harness</li>
+      <li>Backpack</li>
+      <li>Rope</li>
+      <li>Belayer</li>
+    </ul>
+  </section>
+</body>
+```
+The above code is html.
+
+Or this?  
+```markdown
+# Rock Climbing Packing List
+
+* Climbing Shoes
+* Harness
+* Backpack  
+* Rope
+* Belayer
+```
+The above code is Markdown and it is clear that this option is definitely much easier to read!
+
+We will talk more about the syntax of Markdown after we introduce RMarkdown. 
 
 
 # RMarkdown
+<a href="http://rmarkdown.rstudio.com/">RMarkdown</a> is a variant of Markdown that makes it easy to create dynamic documents, presentations and reports from R.  It has embedded R code chunks to be used with `knitr` to make it easy to create reproducible (web-based) reports in the sense that they can be automatically regnerated when the underlying code it modified.    
+
+- RMarkdown lets you combine **Markdown** with images, links, tables, LaTeX, and actual R code.
+- **RStudio makes creating documents from RMarkdown easy** but you can use Pandoc (more on that later) instead.
+- RStudio (like R) is free and runs on any operating system.
+
+
+RMarkdown renders many different types of files including:  
+
+- <a href="http://rmarkdown.rstudio.com/html_document_format.html">HTML</a>    
+- <a href="http://rmarkdown.rstudio.com/pdf_document_format.html">PDF</a>  
+- Markdown  
+- <a href="http://rmarkdown.rstudio.com/word_document_format.html">Microsoft Word</a>   
+- Presentations:  
+    - Fancy HTML5 presentations:  
+        - <a href="http://rmarkdown.rstudio.com/ioslides_presentation_format.html">ioslides</a>
+        - <a href="http://rmarkdown.rstudio.com/slidy_presentation_format.html">Slidy</a>  
+        - <a href="http://slidify.org/index.html">Slidify</a>
+    - PDF Presentations:  
+        - <a href="http://rmarkdown.rstudio.com/beamer_presentation_format.html">Beamer</a>  
+    - Handouts:  
+        - <a href="http://rmarkdown.rstudio.com/tufte_handout_format.html">Tufte Handouts</a> 
+- <a href="http://rmarkdown.rstudio.com/package_vignette_format.html">HTML R Package Vignettes</a>  
+- <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Even Entire Websites!</a>   
+
+![](Images/Rmd_output.png)
+
+While there are a lot of different types of rendered documents in RMarkdown, today we will focus primarily on HTML output files, as I have found these files to be the most useful and flexible for my research.
+
+## Why R Markdown?
+A convenient tool for reproducible and dynamic reports with R!       
+
+- Execute code with `knitr`.   
+- Easy to learn syntax.  
+- Include LaTeX equations.  
+- Don't need to worry about page breaks or figure placement.  
+- Consolidate your code and write up into a single file:  
+    + Slideshows, pdfs, html documents, word files  
+- It's **so easy** to use with version control with Git!   
+
+### Simple Workflow  
+
+1. Create `.Rmd` file that includes R code chunks and and markdown narratives.  
+2. Give the `.Rmd` file to `knitr` to execute the R code chunks and create a new `.md` file.  
+3. Give the `.md` file to pandoc, which will create the final rendered document (e.g. html, microsoft word, pdf, etc.).  
+
+![](Images/Rmd_workflow.png)
+
+While this may seem complicated, we can hit the "Knit" button at the top of the page
+![](Images/knit_button.png)
+
+or we can run the following code:  
+```
+rmarkdown::render("RMarkdown_Lesson.Rmd", "html_document")
+```
+
+
+
+
 
 ## YAML Headers
 
