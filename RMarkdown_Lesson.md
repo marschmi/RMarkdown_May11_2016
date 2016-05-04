@@ -2,44 +2,24 @@
 Marian L. Schmidt  
 May 11th, 2016  
 
+******************************************************************************************
+
+## Information that is Relevant to this Tutorial  
+
+This tutorial was constructed as a part of Dr. C Titus Brown's <a href="http://dib-training.readthedocs.io/en/pub/index.html" target="_blank">Data Intensive Biology (DIB)</a> training program at the University of California, Davis.  The DIB training program is hosting several local+remote workshops.
+
+Today, there is are two remote classrooms tuning in:  
+
+1. University of California, Davis  
+2. Simon Fraser University in British Columbia, Canada.  
+
+In addition, the audio of this tutorial and the screen of the main instructor will be shared on YouTube.
+
+The Github repository for this website can <a href="https://github.com/marschmi/RMarkdown_May11_2016" target="_blank">be found here</a>.  
 
 
 
-# Getting Started
-
-# 1. Load Packages
-The following packages are necessary for to
-
-```r
-#install.packges("knitr")
-library(knitr)
-#install.packages("dplyr")
-library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
-#install.packages("ggplot2")
-library(ggplot2)
-```
-
-***
+******************************************************************************************
 
 # Dynamic Documents  
 
@@ -51,11 +31,7 @@ library(ggplot2)
 In dynamic documents, program or analysis code is run to produce output (e.g. tables, plots, models, etc) and then are explained through narrative writing. 
 
 
-***
-
-***
-
-
+******************************************************************************************
 
 # Markdown
 
@@ -99,6 +75,7 @@ The above code is Markdown and it is clear that this option is definitely much e
 
 We will talk more about the syntax of Markdown after we introduce RMarkdown. 
 
+******************************************************************************************
 
 # RMarkdown
 <a href="http://rmarkdown.rstudio.com/">RMarkdown</a> is a variant of Markdown that makes it easy to create dynamic documents, presentations and reports from R.  It has embedded R code chunks to be used with `knitr` to make it easy to create reproducible (web-based) reports in the sense that they can be automatically regnerated when the underlying code it modified.    
@@ -133,13 +110,21 @@ While there are a lot of different types of rendered documents in RMarkdown, tod
 ## Why R Markdown?
 A convenient tool for reproducible and dynamic reports with R!       
 
-- Execute code with `knitr`.   
-- Easy to learn syntax.  
-- Include LaTeX equations.  
-- Don't need to worry about page breaks or figure placement.  
+- Execute R code in a few ways:  
+    1. **Code chunks** 
+    2. **Inline code**  
+- Easy to:  
+    - Embed images.  
+    - Learn Markdown syntax.  
+    - Include LaTeX equations.  
+    - Include interactive tables.
+    - Use version control with **Git**.  
+        - Even easier to share and collaborate on analyses, projects and publications!
+    - Add external links - Rmarkdown even understands html code!  
+    - Make beautifully formatted documents.
+- Do not need to worry about page breaks or figure placement.  
 - Consolidate your code and write up into a single file:  
     + Slideshows, pdfs, html documents, word files  
-- It's **so easy** to use with version control with Git!   
 
 ### Simple Workflow  
 
@@ -157,6 +142,110 @@ or we can run the following code:
 rmarkdown::render("RMarkdown_Lesson.Rmd", "html_document")
 ```
 
+### Creating an `.Rmd` File  
+
+![](Images/create_rmd.png)
+
+![](Images/new_rmd_yaml.png)
+
+
+### Installation
+
+#### Load Packages 
+The following packages are necessary for today's workshop.
+
+```r
+#install.packges("knitr")
+library(knitr)
+#install.packages("dplyr")
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+#install.packages("ggplot2")
+library(ggplot2)
+```
+
+
+
+```r
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+
+### Markdown Basics  
+
+Check out the <a href="http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown Reference Guide</a>
+
+**Something to remember:**  End a line with two spaces to start a new paragraph!
+
+> Time to think!  
+> What happens when you run the following code?
+
+```
+*honey* is **very** _sweet_. Yum^!!!^  
+**bold** and __bolder__  
+R^2^ values are the **informative**!    
+$R^{2}$ describe the *variance* explained in the model. W   
+~~today is not my day~~  
+[link](www.rstudio.com)  
+# RMarkdown is the best  
+## R is the best  
+### Knitr is the best  
+#### Pandoc is the best  
+##### You're the best  
+$$\sqrt{b^2 - 4ac}$$  
+$X_{i,j}$
+```
+
+**Fun Fact!**  The table of contents of this website was created from headers with 1-3 pound symbols!
+
+
+### R Code Chunks  
+
+
+### Inline R Code  
+
+
+
+### Embedding Equations with LaTeX  
+
+Thank you to   
+<a href="http://www.statpower.net/Content/310/R%20Stuff/SampleMarkdown.html">James H. Steiger</a> for this awesome website.
+
+What's the difference between these two lines of code? 
+
+```
+$$X_{i,j}$$
+$X_{i,j}$
+```
+
+
+
+### Rendering Output  
+### Output Options 
+
+
+
+# Getting Started
+
 
 
 
@@ -173,7 +262,7 @@ Rmarkdown has several options that control the appearance of HTML documents.  So
 
 The HTML output themes are drawn from the <a href="http://bootswatch.com/">Bootswatch</a> library.  Valid **HTML themes** include the following:    
 
-- `cerulean`, `cosmo`, `default`,`flatly`, `journal`, `lumen`, `paper`, `readable`, `sandstone`, `spacelab`, `simplex`, `united`, and `yeti`.  
+- `cerulean`, `cosmo`,`flatly`, `journal`, `lumen`, `paper`, `readable`, `sandstone`, `spacelab`, `simplex`, `united`, and `yeti`.  
     - For example, the theme of this page is `lumen`.
 - Pass null for no theme (in this case you can use the css parameter to add your own styles).
 
@@ -246,6 +335,5 @@ knit_theme$set("fruit")
 ```
 
 Here's the link to find your favorite theme of all the <a href="http://animation.r-forge.r-project.org/knitr/">80 knitr highlight themes</a>.
-
 
 
