@@ -435,10 +435,14 @@ A code chunk looks like:
 Use R code to say whether or not to evaluate a chunk (so cool!).  
 
 
+## Global Chunk Options
+
 ## Chunk Labels 
 
 ## Chunk Syntax 
 
+
+## Collapse Output (p. 51)
 
 
 ## Knitr Themes
