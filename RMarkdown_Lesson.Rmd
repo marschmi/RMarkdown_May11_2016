@@ -4,7 +4,7 @@ author: "Marian L. Schmidt"
 date: "May 11th, 2016"
 output:
   html_document:
-    code_folding: hide
+    code_folding: show
     highlight: kate
     keep_md: yes
     number_sections: yes
@@ -15,6 +15,18 @@ output:
       smooth_scroll: yes
       toc_depth: 3
 ---
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(DT)
+library(plotly)
+```
+
+
+
 
 ******************************************************************************************
 
@@ -52,12 +64,74 @@ I could __not__ have made this tutorial without these amazing resources:
 
 # Dynamic Documents  
 
-<a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is the basic idea behind dynamic documents and was proposed by Donald Knuth in 1984.  Originally, it was for mixing the source code and documentation of software development together.  Then we could:  
+<a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is the basic idea behind dynamic documents and was proposed by Donald Knuth in 1984.  Originally, it was for mixing the source code and documentation of software development together.  
+
+The 3 steps of **Literate Programming**:  
+
+1. **Parse** the source document and separate code from narratives.  
+2. **Execute** source code and return results.  
+3. **Mix** results from the source code with the original narratives.  
+
+
+So that leaves 2 steps for us:  
+
+Write:  
+1. Analysis code  
+2. A narrative to explain the results from the analysis code.  
+
+Traditionally, people use comments in their code 
+
+```{r mtcars-example-code, eval = FALSE, echo = TRUE}
+# What does the data look like?
+datatable(mtcars) # Interactive table 
+
+# Is there a relationship between the weight of a car and the miles per gallon?
+lm_mpg <- lm(mpg ~ wt, data = mtcars) # Run linear model predicting mpg based on wt
+coef_lm_mpg <- coef(summary(lm_mpg)) # Extract coefficients to table 
+kable(coef_lm_mpg) # Produce non-interactive table - function in knitr
+
+# Plot the relationship between weight and miles per gallon  
+plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + # 
+  geom_smooth(method = "lm") + theme_bw() + # add linear model and make black and white
+  xlab("Weight (1000lbs)") + ylab("Miles per Gallon") # Add axis labels
+ggplotly(plot) # Make the plot interactive
+```
+
+
+And if we evaluated the code?  
+```{r mtcars-show, fig.align='center', fig.height=4, fig.width=4, echo = TRUE}
+# What does the data look like?
+datatable(mtcars) # Interactive table 
+
+# Is there a relationship between the weight of a car and the miles per gallon?
+lm_mpg <- lm(mpg ~ wt, data = mtcars) # Run linear model predicting mpg based on wt
+coef_lm_mpg <- coef(summary(lm_mpg)) # Extract coefficients to table 
+kable(coef_lm_mpg) # Produce non-interactive table - function in knitr
+
+# Plot the relationship between weight and miles per gallon  
+plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + # 
+  geom_smooth(method = "lm") + theme_bw() + # add linear model and make black and white
+  xlab("Weight (1000lbs)") + ylab("Miles per Gallon") # Add axis labels
+ggplotly(plot) # Make the plot interactive
+```
+
+
+
+Then we could:  
 
 1. **Tangle**:  Extract the source code out of the document.  
 2. **Weave**:  Execute the code to get the compiled results.  
 
 In dynamic documents, program or analysis code is run to produce output (e.g. tables, plots, models, etc) and then are explained through narrative writing. 
+
+
+## Reproducible Research  
+
+Reproducible research is one possible product of dynamic documents, however, it is not guaranteed!  Good practices for reproducible research include:  
+
+1. Mange all source files under the same directory.  
+2. Use relative paths.  
+3. Do not change the work
 
 
 ******************************************************************************************
@@ -106,7 +180,7 @@ We will talk more about the syntax of Markdown after we introduce RMarkdown.
 
 ******************************************************************************************
 
-# Why RMarkdown?
+# RMarkdown
 <a href="http://rmarkdown.rstudio.com/">RMarkdown</a> is a variant of Markdown that makes it easy to create dynamic documents, presentations and reports from R.  It has embedded R code chunks to be used with `knitr` to make it easy to create reproducible (web-based) reports in the sense that they can be automatically regnerated when the underlying code it modified.    
 
 - RMarkdown lets you combine **Markdown** with images, links, tables, LaTeX, and actual R code.
@@ -337,7 +411,37 @@ $X_{i,j}$
 
 **************************************************************************************************
 
-# Knitr Themes
+# Knitr  
+
+Knitr:  
+
+1. **Identifies code** including chunks and inline
+2. **Evaluates** all the code and returns the results 
+3. **Renders** a formatted results and combines with original file.   
+
+
+Mainly **Knitr** works with code chunks and inline code.
+
+A code chunk looks like:
+
+    ```{r simulate_data}  
+    x <- rnorm(100)  
+    y <- 2*x + rnorm(100)
+    ```
+  
+
+## Chunk Options  
+
+Use R code to say whether or not to evaluate a chunk (so cool!).  
+
+
+## Chunk Labels 
+
+## Chunk Syntax 
+
+
+
+## Knitr Themes
 The knitr syntax theme can be adjusted or completely customized.  If you do not prefer the default themes, use the object `knit_theme` to change it.  There are **80 themes** contained within `knitr` and we can view the names of them by `knit_theme$get()`.
 
 What are the first 30 `knitr` themes?
