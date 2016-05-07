@@ -304,7 +304,7 @@ $X_{i,j}$
 
 R code chunks can be used to render R output into documents or to display code for illustration. 
 
-
+Chunk labels must be unique throughout the document - otherwise there will be an error!
 
 ## Inline R Code  
 
@@ -413,6 +413,8 @@ $X_{i,j}$
 
 # Knitr  
 
+
+
 Knitr:  
 
 1. **Identifies code** including chunks and inline
@@ -462,4 +464,118 @@ knit_theme$set("fruit")
 
 Here's the link to find your favorite theme of all the <a href="http://animation.r-forge.r-project.org/knitr/">80 knitr highlight themes</a>.
 
+
+## Other Programming Languages  
+
+While knitr must be run within the R environment, it also supports many other programming languages including:  
+
+- Python  
+- Ruby  
+- Haskell  
+- awk/gawk  
+- sed  
+- shell scripts  
+- Perl  
+- SAS  
+- TikZ  
+- Graphviz  
+- C++  
+- And others...  
+
+However, we have to install the corresponding software package in advance to use an engine.    
+
+Enter:  `engine` 
+
+- `engine = "bash"` will load in bash and allow the user to write shell scripts within that code chunk.  
+
+
+
+
+# Caching  
+
+**Problem:**  Some code chunks take a *long* time to run and may not be updated very often.  
+
+**Solution:**  Caching!  If a code chunk has not been modified since the last rendering of the document, the old results will be directly used instead of re-running the chunk.
+
+
+**lazy-loading** is when an aobject will not be loaded into memory until it is used.  A "promise" is instead created, which is computationally easy (to learn more run`?promise`).
+
+
+Therefore, when rendering the document, cached chunks are skipped and the output created previously from these chunks are will be (lazy-) loaded from the `cache` folder.
+
+However, if a single change to the chunk occurs (even a whitespace counts!) then `knitr` will acknowledge this change and will actually run the chunk when the document is rendered.
+
+
+`cache`=TRUE, default =FALSE
+
+`cache.path`
+
+
+
+Some issues with caching:  
+
+1. R is updated every few months.  `R.version.string`  
+2. External files that knitr does not track changes, may be updated and results will need to be re-run.  
+3. Somtimes a cached chunk might rely on objects from other cached chunk.  This can be a serious problem!  Hence, chunk dependencies!  
+
+`dependson` chunk option in knitr.  
+
+## Chunk Dependencies    
+
+### Manual Dependency  
+
+- `dependson` specifies which other chunks the current chunk relies on by setting a vector of chunk labels.  
+    - Examples with integers:  
+        - `depesndson = 1`: Chunk relies on first Chunk  
+        - `dependson = c(6,8)`:  Chunk relies on 6^th^ and 8^th^ chunks  
+        - `dependson = -1`:  Chunk relies on previous chunk.
+        - `dependson = c(-1, -2)`: Chunk relies on the two previous chunks.  
+        - **Note:**  When `dependson` takes on an integer value, it cannot make a chunk depend on *later* chunks - only *previous* chunks.  Therefore, it may be useful to use the chunk names or vectors of chunk names.  
+    - Examples with chunk names:  
+        - `dependson = c("Chunk-1", "Chunk-2", "Chunk-3")`  
+        - `dependson = c("data-generation", "data-transforamtion")`  
+- As a result, each time one of the cached chunks `"Chunk-1"`, `"Chunk-2"`, and `"Chunk-3"` are re-built, the current chunk will lose its cache and also be rebuilt!  
+
+### Automatic Dependency  
+
+Enter:  `autodep` chunk option and function `dep_auto()`  
+
+- `autodep` and `dep_auto()` state that if any objects in the current chunk are created in previous chunks, then the current chunk depends on a previous chunk.  
+
+For a more conservative approach, enter `dep_prev()`.
+
+- `dep_prev` states that a cached chunk will depend on all of its previous chunks.  Therefore, whenever previous chunks are updated, all the later chunks will also be updated.  
+
+
+Knitr only tracks changes with cached chunks, **not in uncached chunks!**  Fortunately, knitr will give a warning when it sees a dependency on an uncached chunk.  
+
+### Load Cache Manually  
+
+Suppose you calculated a value *z* in a chunk towards the end of the document, however, you would like to use *z* in an earlier chunk.  However, this impossible because knitr compiles the document in a linear fashion and it cannot use objects created in the future.  
+
+Enter:  `load_cache`, which takes a chunk label to find the cache database
+
+```
+load_cache(label, object, notfound = "NOT AVAILABLE", 
+  path = opts_chunk$get("cache.path"), lazy = TRUE)
+```
+
+Therefore, if you use *z* in an inline R expression, it will output `NOT AVAILABLE` and since you have specified `notfound = "NOT AVAILALBE"` it will go back at the end and replace it with the value of *z*.  
+
+So cool!
+
+
+## Side Effects
+
+A **side effect** refers to a state change that occurs outside of a function that is not the reutrned value.  
+
+- `par()` and `options()` are side effects in the sense that they are not cached.  
+- Set all the global options in the first chunk and **never** cache that chunk.  
+
+
+
+
+We need to be careful with the chunk options to be sure that results from cached chunks are up-to-date.
+
+We can also turn off lazy-loading by setting the `cache.lazy = FALSE`. 
 
