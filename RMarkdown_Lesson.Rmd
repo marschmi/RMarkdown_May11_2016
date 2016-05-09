@@ -7,19 +7,19 @@ output:
     code_folding: show
     highlight: kate
     keep_md: yes
-    number_sections: yes
-    smooth_scroll: yes
     theme: readable
-    toc: yes
+    toc: true
+    number_sections: true
     toc_float:
       collapsed: no
-      toc_depth: 3
+      toc_depth: 3  
+      smooth_scroll: true
 ---
 
 ```{r set-global-options, echo = FALSE}
 knitr::opts_chunk$set(eval = TRUE, 
                       echo = TRUE, 
-                      cache = TRUE,
+                      cache = FALSE,
                       include = TRUE,
                       collapse = FALSE,
                       dependson = NULL,
@@ -41,6 +41,21 @@ library(DT)
 library(plotly)
 ```
 
+**While you're waiting for the workshop to start, please do the following:**
+
+1. Open up **RStudio**.  
+2. Check that you have the correct versions of **R** and **RStudio**.  If you do not have the correct version of R and RStudio, please see the installation instructions on our workshop website:    
+        - **R:** `Version 3.3.0 (2016-05-03)`  
+        - **RStudio:** `0.99.1172`  
+3. he install the following packages.
+
+```{r install-directions, eval = FALSE}
+install.packages("rmarkdown", type = "source")
+install.packages("knitr") 
+install.packages("devtools") # To include the session information  
+install.packages("ggplot2") # For plotting
+install.packges("DT") # Interactive HTML tables
+```
 
 
 
@@ -230,8 +245,8 @@ While there are a lot of different types of rendered documents in RMarkdown, tod
 A convenient tool for reproducible and dynamic reports with R!       
 
 - Execute R code in a few ways:  
-    1. **Code chunks** 
-    2. **Inline code**  
+    1. **Inline Code:**  Surround code with back ticks and r and then R will replace the inline code with the results of the code.  
+    2. **Code Chunks:**  Parts of the document that includes several lines of program or analysis code.  It may render a plot or table, calculate summary statistics, load packages, etc.  
 - Easy to:  
     - Embed images.  
     - Learn Markdown syntax.  
@@ -318,16 +333,17 @@ Today, we will be focused on HTML files.  However, please be welcome to play aro
 
 Check out the <a href="http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown Reference Guide</a>
 
-Create lists with `+`, `-`, or `*`.
+To list a few from the <a href="http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf">RMarkdown Cheatsheet</a>:  
+
+![Markdown Basics from RStudio's RMarkdown Cheatsheet](Images/markdown_basics.png)
 
 
+**Helpful Hint:**  End a line with two spaces to start a new paragraph.
 
-**Something to remember:**  End a line with two spaces to start a new paragraph!
-
-> Time to think!  
+> **Challenge:** 
 > What happens when you run the following code?
 
-```
+```{r, eval = FALSE}
 *honey* is **very** _sweet_. Yum^!!!^  
 **bold** and __bolder__  
 R^2^ values are the **informative**!    
@@ -369,7 +385,8 @@ There are 2 ways to embed code within an RMarkdown document.
     - For example:  
         - Two times five equals `r 2*5`  
         - ```Two times five equals "`r 2*5`" ```
-2. **Code Chunks:**  
+2. **Code Chunks:**  Parts of the document that includes several lines of program or analysis code.  It may render a plot or table, calculate summary statistics, load packages, etc.  
+
 
 
 
@@ -383,14 +400,9 @@ To insert an R code chunk, you can type it manually or just press the `Insert a 
 
 ![Inserting a code chunk](Images/insert_code_chunk.png)  
 
-> ```{r chunk_name}
+    ```{r}  
+    ```    
 
-> ```
-
-
-    ```{r}
-
-    ```
 
 Pressing tab when inside the braces will bring up code chunk options.
 
@@ -414,73 +426,12 @@ df
 
 
 
-
-
-### Global Chunk Options  
-
-You may wish to have the same chunk settings throughout your document and so it might be nice to type options once instead of always re-typing it for each chunk.  To do so, you can set global chunk options at the top of the document.  
-
-```
-knitr::opts_chunk$set(echo = FALSE, 
-                      eval = TRUE, 
-                      message = FALSE,
-                      warning = FALSE, 
-                      fig.path = "Figures/",
-                      fig.width = 12, 
-                      fig.height = 8)
-```
-
-For example, if you're working with a collaborator who does not want to see the code - you could set `eval = TRUE` and `echo = FALSE` so the code is evaluated but not shown.  In addition, you may want to use `message = FALSE` and `warning = FALSE` so your collaborator does not see any messages or warnings from R.  
-
-If you would like to save and store figures within a subdirectory within the project, `fig.path = "Figures/"`.  Here, the `"Figures/"` denotes a folder named *Figures* within the current directory where the figures produced within the document will be stored.  **Note:** by default figures are not saved.  
-
-Global chunk options will be set for the rest of the document.  If you would like to have a particular chunk be different from the global options, specify at the beginning of that particular chunk.
-
-Best practices regarding code chunks:  
-
-- Always name/label your code chunks!  
-    - When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
-- Instead of specifying the chunk options in every chunk, set the global chunk options at the beginning of the document with `knitr::opts_chunk$set()`.  
-
-Chunk labels must be unique throughout the document - otherwise there will be an error!
-
-
-
 ### Inline R Code  
 
-
+Inline code is created by using a back tick (`) and the letter r followed by another back tick.  
 
 
 **************************************************************************************************
-
-## Installation
-
-#### Load Packages 
-The following packages are necessary for today's workshop.
-```{r load-packages, echo = TRUE, eval = TRUE}
-#install.packges("knitr")
-library(knitr)
-#install.packages("dplyr")
-library(dplyr)
-#install.packages("ggplot2")
-library(ggplot2)
-```
-
-
-```{r setup, echo = TRUE, eval = TRUE}
-knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
-```
-
-
-
-
-
-## Rendering Output  
-
-
-
-## Output Options 
-
 
 
 
@@ -497,8 +448,51 @@ $X_{i,j}$
 ```
 
 
+# Appearance  
 
-## RMarkdown Appearance and Syle
+There are many options that we can control within our `.Rmd` document.  This section helps to introduce and explore some of these options for HTML documents.  
+
+## Code Folding  
+
+When 
+
+## Table of Contents  
+
+A table of contents can be added to the rendered document by using the `toc` option in the YAML header.
+
+Options Include:  
+
+- `toc`:  Whether to include to the table of contents:  
+    - `toc: true`: Includes a table of contents  
+    - **Default:**`toc: false`:  Does not include a table of contents  
+- `toc_depth:`:  How many levels within the table of contents should be included in the table of contents?  
+    - **Default:** `doc_depth: 3` will include headers with `###`.  
+- `number_sections:` Add section numbers to the headers.  For example, this document has `number_sections: true`  
+    - **Default:** `number_sections: false`  
+    - Note: With each `#` there will be a decimal point added to all headers.  
+- `toc_float:`  
+    - 2 other optional parameters within `toc_float:`  
+        - `collapsed:` Controls if the table of contents appears with only the top level.  It will expand with the cursor over it.  
+            - **Default:** `collapsed: TRUE`
+        - `smooth_scroll:` Controls whether the page scrolls are animated when the items within the table of contents are navigated to via clicking on them.  
+            - **Default:** `smooth_scroll: true`      
+
+
+For example:  
+
+```
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+```
+
+> **Challenge:**
+> Make the YAML header for an HTML document 
+
+## Themes
+
 RMarkdown has several options that control the appearance of HTML documents.  Some arguments to choose from are:  
 
 - **theme**  
@@ -580,14 +574,64 @@ A code chunk looks like:
 
 ## Chunk Options  
 
-Use R code to say whether or not to evaluate a chunk (so cool!).  
+Use R code to say whether or not to evaluate a chunk (so cool!)  
 
 
-## Global Chunk Options
+- eval  
+- echo  
+- include  
+- message  
+- error  
+- 
+
+
+
+### Figures  
+
+Some knitr chunk options that relate to figures:  
+
+- `fig.width` and `fig.height`  
+    - *Default:* `fig.width = 7`, `fig.height = 7`  
+- `fig.align`:  How to align the figure  
+    - *Options include:* `"left"`, `"right"`, and `"center"`  
+- `fig.caption` will control whether there's a caption on not  
+- `fig.path`: A file path to the directory to where knitr should store the graphic output created by the chunk.  
+    - *Default:* `'figure/'`
+
+
+## Global Options 
+
+You may wish to have the same chunk settings throughout your document and so it might be nice to type options once instead of always re-typing it for each chunk.  To do so, you can set global chunk options at the top of the document.  
+
+```
+knitr::opts_chunk$set(echo = FALSE, 
+                      eval = TRUE, 
+                      message = FALSE,
+                      warning = FALSE, 
+                      fig.path = "Figures/",
+                      fig.width = 12, 
+                      fig.height = 8)
+```
+
+For example, if you're working with a collaborator who does not want to see the code - you could set `eval = TRUE` and `echo = FALSE` so the code is evaluated but not shown.  In addition, you may want to use `message = FALSE` and `warning = FALSE` so your collaborator does not see any messages or warnings from R.  
+
+If you would like to save and store figures within a subdirectory within the project, `fig.path = "Figures/"`.  Here, the `"Figures/"` denotes a folder named *Figures* within the current directory where the figures produced within the document will be stored.  **Note:** by default figures are not saved.  
+
+Global chunk options will be set for the rest of the document.  If you would like to have a particular chunk be different from the global options, specify at the beginning of that particular chunk.
+
+> **Best practices regarding code chunks:**  
+
+>1. Always name/label your code chunks!  
+>- When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
+>- Chunk labels must be unique throughout the document - otherwise there will be an error!  
+>2. Instead of specifying the chunk options in every chunk, set the global chunk options at the beginning of the document with `knitr::opts_chunk$set()`.  
+
+
+
+
 
 ## Chunk Labels 
 
-## Chunk Syntax 
 
 
 ## Collapse Output (p. 51)
@@ -735,6 +779,22 @@ A **side effect** refers to a state change that occurs outside of a function tha
 We need to be careful with the chunk options to be sure that results from cached chunks are up-to-date.
 
 We can also turn off lazy-loading by setting the `cache.lazy = FALSE`. 
+
+
+# Bibliography  
+
+It's also possible to inlucde a BibTex bibliography file in the YAML header.  
+
+```
+output:  
+  html_document: 
+    toc: true 
+    toc_float: true
+bibliography: bibliography.bib
+```
+
+Check out the very helpful RStudio
+
 
 
 # Session Info 
