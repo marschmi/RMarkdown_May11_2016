@@ -14,6 +14,8 @@ output:
       collapsed: no
       toc_depth: 3  
       smooth_scroll: true
+bibliography: 2016-05-09-R-packages.bib
+csl: nature.csl
 ---
 
 ```{r set-global-options, echo = FALSE}
@@ -783,7 +785,22 @@ We can also turn off lazy-loading by setting the `cache.lazy = FALSE`.
 
 # Bibliography  
 
-It's also possible to inlucde a BibTex bibliography file in the YAML header.  
+It's also possible to inlucde a bibliography file in the YAML header.  Bibliography formats that are readable by Pandoc include the following:  
+
+| Format | 	File extension   |
+|-----+-------|
+| MODS  | 	.mods |
+| BibLaTeX  | .bib  |
+| BibTeX  | .bibtex  |
+| RIS  | .ris  |
+| EndNote  | .enl  |
+| EndNote XML  | .xml  |
+| ISI  | .wos  |
+| MEDLINE  | .medline  |
+| Copac  | 	.copac  |
+| JSON citeproc  | 	.json  |
+
+An example YAML header with a bibliography file:
 
 ```
 output:  
@@ -793,7 +810,45 @@ output:
 bibliography: bibliography.bib
 ```
 
-Check out the very helpful RStudio
+Check out the very helpful webpage by the R Core team on <a href="http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html" target="_blank">bibliographies and citations</a>.  
+
+## Placement 
+
+Automatically the bibliography will be placed at the end of the document. Therefore, you should finish your `.Rmd` document with `# References` so the bibliography comes after the header for the bibliography.
+
+```
+final words...
+
+# References
+```
+
+
+## Citation Styles 
+
+**Citation Sylte Language (CSL)** is an XML-based language that identifies the format of citations and bibliographies. Reference management programs such as Zotero, Mendeley and Papers all use CSL.
+
+Search for your favorite journal and CSL in the <a href="https://www.zotero.org/styles" target="_blank">Zotero Style Repository</a>, which currently has 8,152 CSLs.  Is there a style that you're looking for 
+
+```
+output:  
+  html_document: 
+    toc: true 
+    toc_float: true
+bibliography: bibliography.bib
+```
+
+
+## Citations  
+
+Citations go inside square brackets `[ ]`and are separated by semicolons `;`. Each citation must have a key, composed of `@ + the citation identifier` from the database, and may optionally have a prefix, a locator, and a suffix. Here are some examples:
+
+
+
+Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].
+
+I love making beautiful plots with ggplot2 [@R-ggplot2]
+
+This is AWESOME!!!!!!!!!  
 
 
 
@@ -802,3 +857,4 @@ Check out the very helpful RStudio
 devtools::session_info()
 ```
 
+# References 
