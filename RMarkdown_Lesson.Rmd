@@ -8,13 +8,27 @@ output:
     highlight: kate
     keep_md: yes
     number_sections: yes
+    smooth_scroll: yes
     theme: readable
     toc: yes
     toc_float:
       collapsed: no
-      smooth_scroll: yes
       toc_depth: 3
 ---
+
+```{r set-global-options, echo = FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R",
+                      error = TRUE,
+                      fig.align = "center", 
+                      fig.width = 7,
+                      fig.height = 7)
+```
+
 
 
 ```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
@@ -99,7 +113,7 @@ ggplotly(plot) # Make the plot interactive
 
 
 And if we evaluated the code?  
-```{r mtcars-show, fig.align='center', fig.height=4, fig.width=4, echo = TRUE}
+```{r mtcars-show, fig.height=4.5, fig.width=4.5, cache = FALSE}
 # What does the data look like?
 datatable(mtcars) # Interactive table 
 
@@ -231,13 +245,29 @@ A convenient tool for reproducible and dynamic reports with R!
 
 ## Simple Workflow  
 
-1. Create `.Rmd` file that includes R code chunks and and markdown narratives.  
+To make a report:  
+
+1. Create a `.Rmd` file.  
+    - Create a YAML header (more on this in a minute!)
+2. Write the content with RMarkdown syntax.  
+3. Embed the R code in code chunks or inline code.  
+4. Render the document output.  
+
+![Workflow for creating a report](Images/rmd_workflow_cheatsheet.png)
+
+
+
+**Overview of the steps RMarkdown takes to get to the rendered document:**  
+
+1. Create `.Rmd` report that includes R code chunks and and markdown narratives (as indicated in steps above.).  
 2. Give the `.Rmd` file to `knitr` to execute the R code chunks and create a new `.md` file.  
-3. Give the `.md` file to pandoc, which will create the final rendered document (e.g. html, microsoft word, pdf, etc.).  
+    - <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> is a package within R that allows the integration of R code into rendered RMarkdown documents such as HTML, latex, pdf, word, among other document types.  
+3. Give the `.md` file to **pandoc**, which will create the final rendered document (e.g. html, microsoft word, pdf, etc.).  
+    - <a href="http://pandoc.org/" target="_blank">Pandoc</a> is a universal document converter and enables the conversion of one document type (in this case: `.Rmd`) to another (in this case: HTML)
 
-![](Images/Rmd_workflow.png)
+![How an Rmd document is rendered](Images/Rmd_workflow.png)
 
-While this may seem complicated, we can hit the "Knit" button at the top of the page
+While this may seem complicated, we can hit the "Knit" button at the top of the page like this:  
 ![](Images/knit_button.png)
 
 or we can run the following code:  
@@ -245,12 +275,40 @@ or we can run the following code:
 rmarkdown::render("RMarkdown_Lesson.Rmd", "html_document")
 ```
 
-## Creating an `.Rmd` File  
+## Creating a `.Rmd` File  
 
+1.  In the menu bar, click **File -> New File -> RMarkdown**  
+    - Or simply click on the green plus sign in the top left corner of RStudio.
 ![](Images/create_rmd.png)
+2. The window below will pop up.  
+- Inside of this window, choose the type of output by selecting the radio buttons.  **Note:** this output can be easily changed later!  
+3. Click **OK**  
+![](Images/new_rmd_yaml.png)  
 
-![](Images/new_rmd_yaml.png)
 
+## YAML Headers
+
+YAML stands for "YAML Ain't Markup Language" or "Yet Another Markup Languge" and is basically a nested list structure that includes the metadata of the document.  It is enclosed between two lines of three dashes --- and as we saw above is automatically written by RStudio.  A simple example:  
+
+```
+---
+title:  "Analysis Report"  
+Author:  "Marian L. Schmidt"  
+date: "May 2016"  
+output:  html_document
+---
+```
+
+The above example will create an HTML document.  However, the following options are also available.  
+
+- `html_document`  
+- `pdf_document`  
+- `word_document`  
+- `beamer_presentation` (pdf slideshow)  
+- `ioslides_presentation` (HTML slideshow)  
+- and more...  
+
+Today, we will be focused on HTML files.  However, please be welcome to play around with creating word and pdf documents.  Presentation slides take on a slightly different syntax (e.g. to specify when one slide ends and the next one starts) and so there is a bit of markdown syntax specific to presentations that are beyond the focus of todays workshop.  
 
 
 
@@ -281,7 +339,7 @@ $R^{2}$ describe the *variance* explained in the model. W
 ##### You're the best  
 $$\sqrt{b^2 - 4ac}$$  
 $X_{i,j}$  
-
+> Today is Monday, May 11th  
 
 ### Chocolate Chip cookie Recipe 
 
@@ -300,25 +358,116 @@ $X_{i,j}$
 **Fun Fact!**  The table of contents of this website was created from headers with 1-3 pound symbols!
 
 
-## R Code Chunks  
 
-R code chunks can be used to render R output into documents or to display code for illustration. 
+## Embed Code
+
+There are 2 ways to embed code within an RMarkdown document.  
+
+1. **Inline Code:**  Surround code with back ticks and r and then R will replace the inline code with the results of the code.  
+    - For example:  
+        - Two times five equals `r 2*5`  
+        - ```Two times five equals "`r 2*5`" ```
+2. **Code Chunks:**  
+
+
+
+### R Code Chunks  
+
+R code chunks can be used to render R output into documents or to display code for illustration.  
+
+**The Anatomy of a knitr code chunk:**  
+
+To insert an R code chunk, you can type it manually or just press the `Insert a new code chunk` button or use the shortcut key. This will produce the following code chunk:
+
+![Inserting a code chunk](Images/insert_code_chunk.png)  
+
+> ```{r chunk_name}
+
+> ```
+
+
+    ```{r}
+
+    ```
+
+Pressing tab when inside the braces will bring up code chunk options.
+
+The following R code chunk labelled `basic-console` is as follows:
+
+    ```{r }
+    x <- 1:10
+    y <- round(rnorm(10, x, 1), 2)
+    df <- data.frame(x, y)
+    df
+    ```
+    
+The code chunk input and output is then displayed as follows:
+
+```{r basicconsole}
+x <- 1:10
+y <- round(rnorm(10, x, 1), 2)
+df <- data.frame(x, y)
+df
+```
+
 
 Chunk labels must be unique throughout the document - otherwise there will be an error!
 
-## Inline R Code  
+
+
+### Inline R Code  
+
+
+
+
+**************************************************************************************************
+
+## Installation
+
+#### Load Packages 
+The following packages are necessary for today's workshop.
+```{r load-packages, echo = TRUE, eval = TRUE}
+#install.packges("knitr")
+library(knitr)
+#install.packages("dplyr")
+library(dplyr)
+#install.packages("ggplot2")
+library(ggplot2)
+```
+
+
+```{r setup, echo = TRUE, eval = TRUE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+
 
 
 
 ## Rendering Output  
+
+
+
 ## Output Options 
 
 
 
 
-## YAML Headers
+## Embedding Equations with LaTeX  
 
-### RMarkdown Appearance and Syle
+Thank you to   
+<a href="http://www.statpower.net/Content/310/R%20Stuff/SampleMarkdown.html">James H. Steiger</a> for this awesome website.
+
+What's the difference between these two lines of code? 
+
+```
+$$X_{i,j}$$
+$X_{i,j}$
+```
+
+
+
+## RMarkdown Appearance and Syle
 RMarkdown has several options that control the appearance of HTML documents.  Some arguments to choose from are:  
 
 - **theme**  
@@ -373,40 +522,6 @@ output:
 Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style">Appearance and Style</a> in HTML output.
 
 
-**************************************************************************************************
-
-## Installation
-
-#### Load Packages 
-The following packages are necessary for today's workshop.
-```{r load-packages, echo = TRUE, eval = TRUE}
-#install.packges("knitr")
-library(knitr)
-#install.packages("dplyr")
-library(dplyr)
-#install.packages("ggplot2")
-library(ggplot2)
-```
-
-
-```{r setup, echo = TRUE, eval = TRUE}
-knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
-```
-
-
-### Embedding Equations with LaTeX  
-
-Thank you to   
-<a href="http://www.statpower.net/Content/310/R%20Stuff/SampleMarkdown.html">James H. Steiger</a> for this awesome website.
-
-What's the difference between these two lines of code? 
-
-```
-$$X_{i,j}$$
-$X_{i,j}$
-```
-
-
 
 
 **************************************************************************************************
@@ -447,6 +562,14 @@ Use R code to say whether or not to evaluate a chunk (so cool!).
 ## Collapse Output (p. 51)
 
 
+## Spell Check  
+
+Spelling may not be our strong suit and as a result, we may need to check the spelling in our document.  There are two ways to check the spelling:  
+
+1. Click on the "ABC checkmark" to the left of the magnifying glass button in RStudio.  ![](Images/Rmd_output.png)  
+2. Use the `aspell()` function from the `utils` package.  However, it would be desirable to skip code chunks.  The `aspell()` function can take a filter function to skip certain lines in the files and can be used with the function `knit_filter()` which was designed to skip over code chunks in a file.  
+
+
 ## Knitr Themes
 The knitr syntax theme can be adjusted or completely customized.  If you do not prefer the default themes, use the object `knit_theme` to change it.  There are **80 themes** contained within `knitr` and we can view the names of them by `knit_theme$get()`.
 
@@ -484,7 +607,7 @@ While knitr must be run within the R environment, it also supports many other pr
 
 However, we have to install the corresponding software package in advance to use an engine.    
 
-Enter:  `engine` 
+Enter the  `engine` function in Knitr.  This function allows the user to specify the language for a chunk.  
 
 - `engine = "bash"` will load in bash and allow the user to write shell scripts within that code chunk.  
 
@@ -496,6 +619,9 @@ Enter:  `engine`
 **Problem:**  Some code chunks take a *long* time to run and may not be updated very often.  
 
 **Solution:**  Caching!  If a code chunk has not been modified since the last rendering of the document, the old results will be directly used instead of re-running the chunk.
+
+
+**Very simple solution:**  Exit knitting early -> if the rest of the document does not need to be rendered, simply put the `knit_exit()` and the rest of the document will be ignored.  Therefore, results from all previous text and code chunks will be returned.
 
 
 **lazy-loading** is when an aobject will not be loaded into memory until it is used.  A "promise" is instead created, which is computationally easy (to learn more run`?promise`).
