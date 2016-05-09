@@ -20,10 +20,12 @@ output:
 knitr::opts_chunk$set(eval = TRUE, 
                       echo = TRUE, 
                       cache = TRUE,
+                      include = TRUE,
                       collapse = FALSE,
                       dependson = NULL,
-                      engine = "R",
+                      engine = "R", # Chunks will always have R code, unless noted
                       error = TRUE,
+                      fig.path="Figures/",  # Set the figure options
                       fig.align = "center", 
                       fig.width = 7,
                       fig.height = 7)
@@ -411,6 +413,35 @@ df
 ```
 
 
+
+
+
+### Global Chunk Options  
+
+You may wish to have the same chunk settings throughout your document and so it might be nice to type options once instead of always re-typing it for each chunk.  To do so, you can set global chunk options at the top of the document.  
+
+```
+knitr::opts_chunk$set(echo = FALSE, 
+                      eval = TRUE, 
+                      message = FALSE,
+                      warning = FALSE, 
+                      fig.path = "Figures/",
+                      fig.width = 12, 
+                      fig.height = 8)
+```
+
+For example, if you're working with a collaborator who does not want to see the code - you could set `eval = TRUE` and `echo = FALSE` so the code is evaluated but not shown.  In addition, you may want to use `message = FALSE` and `warning = FALSE` so your collaborator does not see any messages or warnings from R.  
+
+If you would like to save and store figures within a subdirectory within the project, `fig.path = "Figures/"`.  Here, the `"Figures/"` denotes a folder named *Figures* within the current directory where the figures produced within the document will be stored.  **Note:** by default figures are not saved.  
+
+Global chunk options will be set for the rest of the document.  If you would like to have a particular chunk be different from the global options, specify at the beginning of that particular chunk.
+
+Best practices regarding code chunks:  
+
+- Always name/label your code chunks!  
+    - When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
+- Instead of specifying the chunk options in every chunk, set the global chunk options at the beginning of the document with `knitr::opts_chunk$set()`.  
+
 Chunk labels must be unique throughout the document - otherwise there will be an error!
 
 
@@ -704,4 +735,10 @@ A **side effect** refers to a state change that occurs outside of a function tha
 We need to be careful with the chunk options to be sure that results from cached chunks are up-to-date.
 
 We can also turn off lazy-loading by setting the `cache.lazy = FALSE`. 
+
+
+# Session Info 
+```{r session-info, results ='markup'}
+devtools::session_info()
+```
 
