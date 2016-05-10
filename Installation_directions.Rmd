@@ -1,0 +1,62 @@
+---
+output: 
+    html_document:
+      code_folding: show
+      highlight: haddock
+      theme: spacelab
+---
+
+
+### Before the RMarkdown workshop on May 11th, 2016, please do the following:
+
+> 1. Open up **RStudio**.  
+
+> 2. Install and download the **devtools** R package by running the following in the R console. 
+
+```{r devtools, eval = FALSE}
+install.packages("devtools") # To include the session information
+library("devtools") # To include the session information  
+```
+
+> 3. Check that you have the correct versions of **R** and **RStudio** by running `devtools::session_info()` in the R console.  
+
+Here, `devtools::` tells **R** to use the `session_info()` function within the **devtools** package rather than the `sessionInfo()` function within the **utils** package.  Running `devtools::session_info()` allows us to see the version of **R** and **RStudio**. 
+
+Do you have the following versions of **R** and **RStudio**?  
+
+- **R:** `Version 3.3.0 (2016-05-03)`  
+- **RStudio:** `0.99.1172`  
+
+  - If you **do** then you are good to go!  
+  - If you **do not** have the correct versions of **R** and **RStudio**, please follow the 
+<a href="http://umswc.github.io/2016-05-11-RMarkdown/" target="_blank">Setup</a> directions on our course page.  
+
+> 3. Install other R packages necessary for the workshop.
+
+```{r install-directions, eval = FALSE}
+## Install the correct packages
+install.packages("rmarkdown") # Make cool dynamic documents
+install.packages("knitr") # Run R Code Chunks
+install.packages("ggplot2") # For plotting
+install.packages("DT") # Interactive HTML tables
+```
+
+```{r library-packages, eval = TRUE}
+## Add these packages to the current session to make sure they load correctly
+library("rmarkdown") # Make cool dynamic documents
+library("knitr") # Run R Code Chunks
+library("ggplot2") # For plotting
+library("DT") # Interactive HTML tables
+```
+
+> 4. If your packages loaded without any errors, then you are ready for the workshop!  
+
+If there were issues with the above packages please try:  
+
+- Troubleshooting by googling the error  
+- Bring the error to the workshop for someone to help you out.  
+
+
+> Looking forward to the workshop!
+
+
