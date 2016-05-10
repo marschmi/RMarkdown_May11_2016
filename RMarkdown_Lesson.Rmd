@@ -46,7 +46,6 @@ library(plotly)
 **While you're waiting for the workshop to start, please do the following:**
 
 1. Open up **RStudio**.  
-
 2. Install and download the **devtools** R package by running the following in the R console. 
 
 ```{r devtools, eval = FALSE}
@@ -55,7 +54,6 @@ library("devtools") # To include the session information
 ```
 
 3. Check that you have the correct versions of **R** and **RStudio** by running `devtools::session_info()` in the R console.  
-
 Here, `devtools::` tells **R** to use the `session_info()` function within the **devtools** package rather than the `sessionInfo()` function within the **utils** package.  Running `devtools::session_info()` allows us to see the version of **R** and **RStudio**. 
 
 Do you have the following versions of **R** and **RStudio**?  
@@ -94,14 +92,13 @@ If there were issues with the above packages please place a pink sticky to get h
 
 # Welcome!
 
-Information that is Relevant to this Tutorial  
+This tutorial was constructed as a part of Dr. C Titus Brown's <a href="http://dib-training.readthedocs.io/en/pub/index.html" target="_blank">Data Intensive Biology (DIB)</a> training program at the University of California, Davis.  The DIB training program is hosting several local+remote workshops covering topics in bioinformatic toos.
 
-This tutorial was constructed as a part of Dr. C Titus Brown's <a href="http://dib-training.readthedocs.io/en/pub/index.html" target="_blank">Data Intensive Biology (DIB)</a> training program at the University of California, Davis.  The DIB training program is hosting several local+remote workshops.
-
-Today, there is are two remote classrooms tuning in:  
+Today, there is are three remote classrooms tuning in:  
 
 1. University of California, Davis  
-2. Simon Fraser University in British Columbia, Canada.  
+2. Simon Fraser University in British Columbia, Canada  
+3. Ontario Institute for Cancer Research
 
 In addition, the audio of this tutorial and the screen of the main instructor will be shared on YouTube.
 
@@ -113,11 +110,10 @@ The Github repository for this website can <a href="https://github.com/marschmi/
 
 # Amazing Resources
 
-I could __not__ have made this tutorial without these amazing resources:  
+I could **not** have made this tutorial without these amazing resources:  
 
-1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a>.
- website hosted by RStudio.  
-2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition.  
+1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a> website hosted by RStudio.  
+2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition and his website for <a href="http://yihui.name/knitr/" target="_blank">Knitr</a>.
 3. Dr. Karl Broman's <a href="http://kbroman.org/knitr_knutshell/" target="_blank">"Knitr in a Knutshell"</a>.  
 4. <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheatsheets</a> released by RStudio.
 
@@ -126,7 +122,7 @@ I could __not__ have made this tutorial without these amazing resources:
 
 # Dynamic Documents  
 
-<a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is the basic idea behind dynamic documents and was proposed by Donald Knuth in 1984.  Originally, it was for mixing the source code and documentation of software development together.  
+<a href="https://en.wikipedia.org/wiki/Literate_programming">Literate programming</a> is the basic idea behind dynamic documents and was proposed by Donald Knuth in 1984.  Originally, it was for mixing the source code and documentation of software development together.  Today, we will create dynamic documents in which program or analysis code is run to produce output (e.g. tables, plots, models, etc) and then are explained through narrative writing.
 
 The 3 steps of **Literate Programming**:  
 
@@ -135,15 +131,21 @@ The 3 steps of **Literate Programming**:
 3. **Mix** results from the source code with the original narratives.  
 
 
-So that leaves 2 steps for us:  
+So that leaves 2 steps for us which includes writing:  
 
-Write:  
 1. Analysis code  
 2. A narrative to explain the results from the analysis code.  
 
-Traditionally, people use comments in their code 
+Traditionally, people used comments to include narrative in their code file `.R` file. For example, the file may include the following
 
 ```{r mtcars-example-code, eval = FALSE, echo = TRUE}
+# Title:  Relationship of Car Weight and Gas Efficiency 
+# By:  Marian Schmidt  
+# Date:  May 11th, 2016
+
+# I predict that there will be a relationship between weight and miles per gallon.  
+# I will test this by running a linear model with the mtcars dataset is within the R datasets
+
 # What does the data look like?
 datatable(mtcars) # Interactive table 
 
@@ -156,11 +158,26 @@ kable(coef_lm_mpg) # Produce non-interactive table - function in knitr
 plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + # 
   geom_smooth(method = "lm") + theme_bw() + # add linear model and make black and white
   xlab("Weight (1000lbs)") + ylab("Miles per Gallon") # Add axis labels
-ggplotly(plot) # Make the plot interactive
+ggplotly(plot) # Make the plot interactive  
+
+# It appears that with a gain in every 1000 pounds that there will be a decrease in fuel efficiency by 5.34 miles per gallon
+# The end
 ```
 
+Then the user would have to read the comments and run the code themselves.  
 
-And if we evaluated the code?  
+However, literate programming allows us to run the code and describe the code all within one document that we could share.  So for example we could do the following:  
+
+***
+
+**Relationship of Car Weight and Gas Efficiency**
+*By:* Marian Schmidt 
+*Date:* May 11th, 2016  
+
+I predict that there will be a relationship between weight and miles per gallon.  
+
+I will test this by running a linear model with the mtcars dataset is within the R datasets.
+
 ```{r mtcars-show, fig.height=4.5, fig.width=4.5, cache = FALSE}
 # What does the data look like?
 datatable(mtcars) # Interactive table 
@@ -177,14 +194,17 @@ plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + #
 ggplotly(plot) # Make the plot interactive
 ```
 
+It appears that with a gain in every **1000** pounds that there will be a **decrease** in fuel efficiency by 5.34 miles per gallon
+
+The end
 
 
-Then we could:  
+***
+
+If we use literate programming, we could also:  
 
 1. **Tangle**:  Extract the source code out of the document.  
 2. **Weave**:  Execute the code to get the compiled results.  
-
-In dynamic documents, program or analysis code is run to produce output (e.g. tables, plots, models, etc) and then are explained through narrative writing. 
 
 
 ## Reproducible Research  
@@ -445,6 +465,7 @@ Name the code chunk something meaningful as to what it is doing.  Below I have n
     n = 10
     seq(n)
     ```
+    
     
 The code chunk input and output is then displayed as follows:
 
