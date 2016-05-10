@@ -1,13 +1,14 @@
 ---
-output: 
-    html_document:
-      code_folding: show
-      highlight: haddock
-      theme: spacelab
+output:
+  html_document:
+    code_folding: show
+    highlight: haddock
+    theme: spacelab
+  pdf_document: default
 ---
 
 
-### Before the RMarkdown workshop on May 11th, 2016, please do the following:
+### 5 installation steps to complete **before** the RMarkdown workshop
 
 > 1. Open up **RStudio**.  
 
@@ -27,14 +28,14 @@ Do you have the following versions of **R** and **RStudio**?
 - **R:** `Version 3.3.0 (2016-05-03)`  
 - **RStudio:** `0.99.1172`  
 
-  - If you **do** then you are good to go!  
-  - If you **do not** have the correct versions of **R** and **RStudio**, please follow the 
+If you **do** then you are good to go!  
+If you **do not** have the correct versions of **R** and **RStudio**, please follow the 
 <a href="http://umswc.github.io/2016-05-11-RMarkdown/" target="_blank">Setup</a> directions on our course page.  
 
-> 3. Install other R packages necessary for the workshop.
+> 4. Install other R packages necessary for the workshop.
 
 ```{r install-directions, eval = FALSE}
-## Install the correct packages
+## Install the necessary packages
 install.packages("rmarkdown") # Make cool dynamic documents
 install.packages("knitr") # Run R Code Chunks
 install.packages("ggplot2") # For plotting
@@ -42,14 +43,14 @@ install.packages("DT") # Interactive HTML tables
 ```
 
 ```{r library-packages, eval = TRUE}
-## Add these packages to the current session to make sure they load correctly
+## Add packages to the current session to make sure they load correctly
 library("rmarkdown") # Make cool dynamic documents
 library("knitr") # Run R Code Chunks
 library("ggplot2") # For plotting
 library("DT") # Interactive HTML tables
 ```
 
-> 4. If your packages loaded without any errors, then you are ready for the workshop!  
+> 5. If the packages loaded without any errors, then you are ready for the workshop!  
 
 If there were issues with the above packages please try:  
 
@@ -58,5 +59,4 @@ If there were issues with the above packages please try:
 
 
 > Looking forward to the workshop!
-
 
