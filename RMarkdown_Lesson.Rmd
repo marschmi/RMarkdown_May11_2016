@@ -493,37 +493,57 @@ To list a few from the <a href="http://www.rstudio.com/wp-content/uploads/2016/0
 
 There are 2 ways to embed code within an RMarkdown document.  
 
-1. **Inline Code:**  Surround code with back ticks and r and then R will replace the inline code with the results of the code.  
-    - For example:  
-        - Two times five equals `r 2*5`  
-        - ```Two times five equals "`r 2*5`" ```
+
+1. **Inline Code:**  Brief code that takes place during the written part of the document.  
+
 2. **Code Chunks:**  Parts of the document that includes several lines of program or analysis code.  It may render a plot or table, calculate summary statistics, load packages, etc.  
+    
+    
+### Inline R Code  
 
+Inline code is created by using a back tick (`) and the letter r followed by another back tick.  
 
+- For example:  2^11^ is `r 2^11`.  
+
+Imagine that you're reporting a p-value and you do not want to go back and add it every time the statistical test is re-run.  Rather, the p-value is `0.0045`.  
+
+This is really helpful when writing up the results section of a paper.  For example, you may have ran a bunch of statistics for your scientific questions and this would be a way to have **R** save that value in a variable name.  
+
+For example:  Is the gas mileage of automatic versus manual transmissions significantly different within the `mtcars` dataset?  
+
+```{r eval = TRUE, echo = TRUE}
+mpg_auto <- mtcars[mtcars$am == 0,]$mpg # automatic transmission mileage
+mpg_manual <- mtcars[mtcars$am == 1,]$mpg # manual transmission mileage
+transmission_ttest <- t.test(mpg_auto, mpg_manual)
+```
+
+To extract the p-value we can type `transmission_ttest$p.value` within inline code. 
+
+The p-value is `r transmission_ttest$p.value`.
 
 
 ### R Code Chunks  
 
 R code chunks can be used to render R output into documents or to display code for illustration.  
 
-**The Anatomy of a knitr code chunk:**  
+**The Anatomy of a code chunk:**  
 
 To insert an R code chunk, you can type it manually by typing ```` ```{r} ```` followed by  ```` ``` ```` on the next line.  You can also press the `Insert a new code chunk` button or use the shortcut key. This will produce the following code chunk:
 
 ![Inserting a code chunk](Images/insert_code_chunk.png)  
 
     ```{r}
-    n = 10
+    n <- 10
     seq(n)
     ```
 
 
-Pressing tab when inside the braces will bring up code chunk options.
+
 
 Name the code chunk something meaningful as to what it is doing.  Below I have named the code chunk `10-random-numbers`:
 
     ```{r 10-random-numbers}
-    n = 10
+    n <- 10
     seq(n)
     ```
     
@@ -536,133 +556,22 @@ seq(n)
 ```
 
 
-
-### Inline R Code  
-
-Inline code is created by using a back tick (`) and the letter r followed by another back tick.  
-
-Imagine that you're reporting a p-value and you don't want to go back an add it every time .  
-        - For example:  2^11^ is `r 2^11`.  
-
-
 **************************************************************************************************
 
-
-# Appearance  
-
-There are many options that we can control within our `.Rmd` document.  This section helps to introduce and explore some of these options for HTML documents.  
-
-## Code Folding  
-
-When 
-
-## Table of Contents  
-
-A table of contents can be added to the rendered document by using the `toc` option in the YAML header.
-
-Options Include:  
-
-- `toc`:  Whether to include to the table of contents:  
-    - `toc: true`: Includes a table of contents  
-    - **Default:**`toc: false`:  Does not include a table of contents  
-- `toc_depth:`:  How many levels within the table of contents should be included in the table of contents?  
-    - **Default:** `doc_depth: 3` will include headers with `###`.  
-- `number_sections:` Add section numbers to the headers.  For example, this document has `number_sections: true`  
-    - **Default:** `number_sections: false`  
-    - Note: With each `#` there will be a decimal point added to all headers.  
-- `toc_float:`  
-    - 2 other optional parameters within `toc_float:`  
-        - `collapsed:` Controls if the table of contents appears with only the top level.  It will expand with the cursor over it.  
-            - **Default:** `collapsed: TRUE`
-        - `smooth_scroll:` Controls whether the page scrolls are animated when the items within the table of contents are navigated to via clicking on them.  
-            - **Default:** `smooth_scroll: true`      
-
-
-For example:  
-
-```
-output:
-  html_document:
-    toc: true
-    toc_depth: 2
----
-```
-
-> **Challenge:**
-> Make the YAML header for an HTML document 
-
-## Themes
-
-RMarkdown has several options that control the appearance of HTML documents.  Some arguments to choose from are:  
-
-- **theme**  
-- **highlight**  
-- **smart**  
-
-
-The HTML output themes are drawn from the <a href="http://bootswatch.com/">Bootswatch</a> library.  Valid **HTML themes** include the following:    
-
-- `cerulean`, `cosmo`,`flatly`, `journal`, `readable`,`spacelab`, and `united`.  
-    - For example, the theme of this page is `readable`.
-- Pass null for no theme (in this case you can use the css parameter to add your own styles).
-
-**Highlight** specifies the syntax highlighting style. Supported styles include the following:  
-
-- `default`, `espresso`, `haddock`, `kate`, `monochrome`, `pygments`, `tango`, `textmate`, and `zenburn`.   
-- Pass null to prevent syntax highlighting.
-
-**Smart** indicates whether to produce typographically correct output, converting straight quotes to curly quotes, --- to em-dashes, -- to en-dashes, and ... to ellipses. **Smart** is enabled by default.
-
-For example:
-
-```
----
-output:
-  html_document:
-    theme: slate
-    highlight: tango
----
-```
-
-If you felt inclined, you could also produce and use your own theme.  If you did so, the output section of your YAML header would like like:  
-```
-output:
-  html_document:
-    css: styles.css
-```
-
-If you wanted to go the extra mile and write your own theme in addition to highlight, the YAML header would look like: 
-```
----
-output:
-  html_document:
-    theme: null
-    highlight: null
-    css: styles.css
----
-```
-
-
-
-Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style">Appearance and Style</a> in HTML output.
-
-
-
-
-**************************************************************************************************
 
 # Knitr  
 
-
-
-Knitr:  
+**Knitr** is an R-Package that works with  
 
 1. **Identifies code** including chunks and inline
 2. **Evaluates** all the code and returns the results 
 3. **Renders** a formatted results and combines with original file.   
 
+**Knitr** runs code as if it were being run in the R console.  
 
-Mainly **Knitr** works with code chunks and inline code.
+
+
+Mainly **Knitr** works with code chunks.
 
 A code chunk looks like:
 
@@ -674,7 +583,7 @@ A code chunk looks like:
 
 ## Chunk Options  
 
-Use R code to say whether or not to evaluate a chunk (so cool!)  
+Pressing tab when inside the braces will bring up code chunk options.
 
 
 - eval  
@@ -787,6 +696,112 @@ Enter the  `engine` function in Knitr.  This function allows the user to specify
 - `engine = "bash"` will load in bash and allow the user to write shell scripts within that code chunk.  
 
 
+**************************************************************************************************
+
+
+
+# Appearance  
+
+There are many options that we can control within our `.Rmd` document.  This section helps to introduce and explore some of these options for HTML documents.  
+
+## Code Folding  
+
+When 
+
+## Table of Contents  
+
+A table of contents can be added to the rendered document by using the `toc` option in the YAML header.
+
+Options Include:  
+
+- `toc`:  Whether to include to the table of contents:  
+    - `toc: true`: Includes a table of contents  
+    - **Default:**`toc: false`:  Does not include a table of contents  
+- `toc_depth:`:  How many levels within the table of contents should be included in the table of contents?  
+    - **Default:** `doc_depth: 3` will include headers with `###`.  
+- `number_sections:` Add section numbers to the headers.  For example, this document has `number_sections: true`  
+    - **Default:** `number_sections: false`  
+    - Note: With each `#` there will be a decimal point added to all headers.  
+- `toc_float:`  
+    - 2 other optional parameters within `toc_float:`  
+        - `collapsed:` Controls if the table of contents appears with only the top level.  It will expand with the cursor over it.  
+            - **Default:** `collapsed: TRUE`
+        - `smooth_scroll:` Controls whether the page scrolls are animated when the items within the table of contents are navigated to via clicking on them.  
+            - **Default:** `smooth_scroll: true`      
+
+
+For example:  
+
+```
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+```
+
+> **Challenge:**
+> Make the YAML header for an HTML document 
+
+## Themes
+
+RMarkdown has several options that control the appearance of HTML documents.  Some arguments to choose from are:  
+
+- **theme**  
+- **highlight**  
+- **smart**  
+
+
+The HTML output themes are drawn from the <a href="http://bootswatch.com/">Bootswatch</a> library.  Valid **HTML themes** include the following:    
+
+- `cerulean`, `cosmo`,`flatly`, `journal`, `readable`,`spacelab`, and `united`.  
+    - For example, the theme of this page is `readable`.
+- Pass null for no theme (in this case you can use the css parameter to add your own styles).
+
+**Highlight** specifies the syntax highlighting style. Supported styles include the following:  
+
+- `default`, `espresso`, `haddock`, `kate`, `monochrome`, `pygments`, `tango`, `textmate`, and `zenburn`.   
+- Pass null to prevent syntax highlighting.
+
+**Smart** indicates whether to produce typographically correct output, converting straight quotes to curly quotes, --- to em-dashes, -- to en-dashes, and ... to ellipses. **Smart** is enabled by default.
+
+For example:
+
+```
+---
+output:
+  html_document:
+    theme: slate
+    highlight: tango
+---
+```
+
+If you felt inclined, you could also produce and use your own theme.  If you did so, the output section of your YAML header would like like:  
+```
+output:
+  html_document:
+    css: styles.css
+```
+
+If you wanted to go the extra mile and write your own theme in addition to highlight, the YAML header would look like: 
+```
+---
+output:
+  html_document:
+    theme: null
+    highlight: null
+    css: styles.css
+---
+```
+
+
+
+Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style">Appearance and Style</a> in HTML output.
+
+
+
+
+**************************************************************************************************
 
 
 # Caching  
