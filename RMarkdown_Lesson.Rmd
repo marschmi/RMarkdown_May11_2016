@@ -804,9 +804,11 @@ multiplot(plotlist = myplots, cols = 4) # must load in multiplot function from t
 
 ## Tables
 
-Hand writing tables in Markdown can get tedious.  There's a few types of tables that are useful.  Here, we will use our previous example of a linear model on car weight and miles per gallon within the `mtcars` data.  
+Hand writing tables in Markdown can get tedious.  We will not go over this here, however, if you'd like to learn more about Markdown tables check out the <a href="http://rmarkdown.rstudio.com/authoring_pandoc_markdown.html#tables">documentation on tables</a> at the RMarkdown v2 website.
 
-In his <a href="http://kbroman.org/knitr_knutshell/pages/figs_tables.html">Knitr in a Knutshell</a>, Dr. Karl Broman introduces:  `kable`, `pander`, and `xtable` and I have enjoyed using the first two:  
+There's a few types of tables that are useful.  Here, we will use our previous example of a looking at the `mtcars` data  
+
+In his <a href="http://kbroman.org/knitr_knutshell/pages/figs_tables.html">Knitr in a Knutshell</a>, Dr. Karl Broman introduces:  `kable`, `pander`, and `xtable` and I have especially enjoyed using the first two:  
 
 - `kable`: Within the **knitr** package - not many options but looks nice with ease. 
 - `pander`: Within the **pander** package - has many more options and customization.  Useful for bolding certain values (e.g. values below a threshold).  
@@ -815,29 +817,37 @@ In his <a href="http://kbroman.org/knitr_knutshell/pages/figs_tables.html">Knitr
 
 
 ```{r table-examples, eval = TRUE, echo = TRUE, message = FALSE}
-# Is there a relationship between the weight of a car and the miles per gallon?
-lm_mpg <- lm(mpg ~ wt, data = mtcars) # Run linear model predicting mpg based on wt
-coef_lm_mpg <- coef(summary(lm_mpg)) # Extract coefficients to table 
-kable(coef_lm_mpg) # kable table
+kable(head(mtcars, n = 4)) # kable table with 4 rows
 
 # Pander table
 # install.packages("pander") # install pander first
 library(pander)
-pander(coef_lm_mpg)
+pander(head(mtcars, n = 4))
 ```
 
 
-Recently, I discovered the **DT** package which makes the tables interactive in the HTML output.  Cool, huh? 
+## HTML Widgets  
+
+With the release of the new RMarkdown v2 it is now easier than ever to include <a href="http://www.htmlwidgets.org/showcase_datatables.html">HTML Widgets</a>.  Follow the link to explore widgets you're interested in!  
+
+Recently, I discovered the **DT** package which makes the tables interactive in the HTML output.  In addition, <a href="https://plot.ly/r/">Plotly for R</a> produces really beautiful interactive graphics based on **Plotly**.  
+
+Cool, huh? 
 
 ```{r DT-example}
 # DT table = interactive
 # install.packages("DT") # install DT first
 library(DT)
-datatable(coef_lm_mpg)
-multiple_regression <- coef(summary(lm(mpg ~ ., data = mtcars))) 
-datatable(multiple_regression) 
-```
+datatable(head(mtcars, n = nrow(mtcars)), options = list(pageLength = 5)) 
 
+# plotly
+# install.packages("plotly")
+library(plotly)
+mtcars$car <- row.names(mtcars)
+plot_ly(mtcars, x = wt, y = mpg, 
+        text = paste("Car: ", car),
+        mode = "markers", color = wt, size = wt)
+```
 
 
 ## Spell Check  
@@ -1019,7 +1029,7 @@ Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html
 
 # Caching  
 
-**Problem:**  Some code chunks take a *long* time to run and may not be updated very often.  
+**Problem:**  Some code chunks take a __*long*__ time to run and may not be updated very often.  
 
 **Solution:**  Caching!  If a code chunk has not been modified since the last rendering of the document, the old results will be directly used instead of re-running the chunk.
 
@@ -1027,17 +1037,19 @@ Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html
 **Very simple solution:**  Exit knitting early -> if the rest of the document does not need to be rendered, simply put the `knit_exit()` and the rest of the document will be ignored.  Therefore, results from all previous text and code chunks will be returned.
 
 
-**lazy-loading** is when an aobject will not be loaded into memory until it is used.  A "promise" is instead created, which is computationally easy (to learn more run`?promise`).
+**lazy-loading** is when an object will not be loaded into memory until it is used.  A "promise" is instead created, which is computationally easy (to learn more run`?promise`).
 
 
-Therefore, when rendering the document, cached chunks are skipped and the output created previously from these chunks are will be (lazy-) loaded from the `cache` folder.
+Therefore, when rendering the document, cached chunks are skipped and the output created previously from these chunks will be (lazy-) loaded from the `cache` folder.
 
 However, if a single change to the chunk occurs (even a whitespace counts!) then `knitr` will acknowledge this change and will actually run the chunk when the document is rendered.
 
 
-`cache`=TRUE, default =FALSE
+The user can also set the path for where the cached files should be by using `cache.path`  
 
-`cache.path`
+- **Default:**`cache.path = "file_name_cache/"`  
+    - For example:  Check out the github repo for this lesson previously cached chunks are in the `RMarkdown_Lesson_cache` directory.  
+
 
 
 
@@ -1045,13 +1057,13 @@ Some issues with caching:
 
 1. R is updated every few months.  `R.version.string`  
 2. External files that knitr does not track changes, may be updated and results will need to be re-run.  
-3. Somtimes a cached chunk might rely on objects from other cached chunk.  This can be a serious problem!  Hence, chunk dependencies!  
-
-`dependson` chunk option in knitr.  
+3. Somtimes a cached chunk might rely on objects from other cached chunk.  This can be a serious problem - so **<font color="red">be careful</font>**!  Therefore, we should cover chunk dependencies!  
 
 ## Chunk Dependencies    
 
-### Manual   
+### Manual  
+
+We can manually specify whether chunks depend on each other.  
 
 - `dependson` specifies which other chunks the current chunk relies on by setting a vector of chunk labels.  
     - Examples with integers:  
@@ -1080,7 +1092,7 @@ Knitr only tracks changes with cached chunks, **not in uncached chunks!**  Fortu
 
 ### Load Cache Manually  
 
-Suppose you calculated a value *z* in a chunk towards the end of the document, however, you would like to use *z* in an earlier chunk.  However, this impossible because knitr compiles the document in a linear fashion and it cannot use objects created in the future.  
+Suppose you calculated a value *z* in a chunk towards the end of the document, however, you would like to use *z* in an earlier chunk.  This is **impossible because knitr compiles the document in a linear fashion and it cannot use objects created in the future.**  
 
 Enter:  `load_cache`, which takes a chunk label to find the cache database
 
@@ -1100,9 +1112,6 @@ A **side effect** refers to a state change that occurs outside of a function tha
 
 - `par()` and `options()` are side effects in the sense that they are not cached.  
 - Set all the global options in the first chunk and **never** cache that chunk.  
-
-
-
 
 We need to be careful with the chunk options to be sure that results from cached chunks are up-to-date.
 
