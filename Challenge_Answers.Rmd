@@ -1,0 +1,55 @@
+---
+title: "Challenge Answers"
+author: "Marian L. Schmidt"
+date: "May 11, 2016"
+output: html_document
+---
+
+# Markdown Challenge Questions
+
+```
+1.  Today, I am **bold** and am learning *RMarkdown*.
+
+2.  *honey* is **very** _sweet_.  
+
+3. YAS!!!^!!!^  
+
+4. R^2^ values are **informative**!  
+
+5. $R^{2}$ describe the *variance* explained in the model.  
+
+6.  ~~I do not know RMarkdown~~    
+
+7.  [RStudio link](www.rstudio.com)  
+
+8.  Output from the following:  
+# RMarkdown   
+## R   
+### Knitr   
+#### Pandoc  
+##### HTML  
+
+9.  $\sqrt{b^2 - 4ac}$
+
+10. $$\sqrt{b^2 - 4ac}$$  
+
+11.  $X_{i,j}$  
+
+> 12.  Today is the day I will make a dynamic document!  
+
+13.  The following unordered list:  
+
+**Chocolate Chip cookie Recipe** 
+
+- butter
+- sugar  
+    - A mix of brown & white sugar makes it more delicious
+        - mix with butter before you add the *eggs*
+- eggs 
+- vanilla  
+- Mix dry ingredients: 
+    - flour, salt, baking soda  
+- chocolate chips  
+```
+
+
