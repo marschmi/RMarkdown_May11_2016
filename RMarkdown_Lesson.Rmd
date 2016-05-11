@@ -611,19 +611,54 @@ Pressing tab when inside the braces will bring up code chunk options.
 
 ![Some Knitr Chunk Options](Images/chunk_options.png)
 
-There are too many chunk options to cover here
+
+- `results = "asis"` stands for "as is" and will output a non-formatted version. 
+- `collapse` is another chunk option which can be helpful.  If a code chunk has many short R expressions with some output, you can collapse the output into a chunk.     
+
+There are too many chunk options to cover here.  After the workshop take a look around at the options.
 
 Great website for exploring <a href="http://yihui.name/knitr/options/#chunk_options">Knitr Chunk Options</a>.  
 
 
-> Challenge  
-> What happens when we run the following chunks?  
 
-```{r }  
+> **Challenge**  
+> Run the code chunk below and play with the following knitr code chunk options:  
 
+
+>- `eval = TRUE/FALSE`  
+>- `echo = TRUE/FALSE`  
+>- `collapse = TRUE/FALSE`  
+>- `results = "asis","markup`, and `"hide` 
+
+> In markdown, record your results.  
+> **Note:**  Be sure to name your chunks!
+
+```{r challenge-options, eval = FALSE, echo = TRUE}
+1+1
+2*5
+seq(1, 21, by = 3)
+head(mtcars)
+```
+
+**Some examples from the chunk above**
+
+Results from `results="markup", collapse = TRUE}`:
+
+```{r options-intro-markup, results="markup", collapse = TRUE}  
+1+1
+2*5
+seq(1, 21, by = 3)
+head(mtcars)
 ```
 
 
+Results from `results="asis", collapse = TRUE}`:
+```{r options-intro-asis, results="asis", collapse = TRUE}  
+1+1
+2*5
+seq(1, 21, by = 3)
+head(mtcars)
+```
 
 ## Global Options 
 
@@ -737,6 +772,21 @@ ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
     geom_vline(xintercept=mean(mtcars$mpg), col="red") 
 ```
 
+With `fig.width = 2, fig.height = 2`
+
+```{r single-fig-size2, message = FALSE, fig.align = "center", fig.width = 2, fig.height = 2}
+ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept=mean(mtcars$mpg), col="red") 
+```
+
+With `fig.width = 10, fig.height = 10`
+
+```{r single-fig-size10, message = FALSE, fig.align = "center", fig.width = 10, fig.height = 10}
+ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept=mean(mtcars$mpg), col="red") 
+```
 
 
 ```{r many-figs, message = FALSE}
@@ -846,11 +896,24 @@ Enter the  `engine` function in Knitr.  This function allows the user to specify
 
 # Appearance  
 
-There are many options that we can control within our `.Rmd` document.  This section helps to introduce and explore some of these options for HTML documents.  
+There are many options that we can control within our `.Rmd` document.  This section helps to introduce and explore some of these customization options for HTML documents.  
 
 ## Code Folding  
 
-When 
+As you may have noticed, each one of the code chunks in this document has an interactive ![](Images/hide.png) button.  This is controlled in the YAML header and is new as of RMarkdown v2.
+
+
+When the knitr code chunk option `echo = TRUE` is specified (default = TRUE) the R code within the chunk will be included in the output document.  However, there may be times in which a user would like to exclude code entirely (`echo = FALSE`)
+
+-`code_folding:`  
+    - `code_folding: hide`:  Can inlucde R code but have it hidden by default.  
+    - `code_folding: show`:  Shows R code and then the reader can click the ![](Images/hide.png) button to hide that chunk if they wish.  
+    
+
+```
+output: html_document
+    code_folding: show
+```
 
 ## Table of Contents  
 
@@ -885,7 +948,13 @@ output:
 ```
 
 > **Challenge:**
-> Make the YAML header for an HTML document 
+> Make the YAML header for an HTML document that includes:  
+
+> - Table of contents
+> - Float the table of contents  
+> - Section headers with two hashtags (`##`)  
+> - Numbered sections  
+> - No smooth scrolling
 
 ## Themes
 
@@ -982,7 +1051,7 @@ Some issues with caching:
 
 ## Chunk Dependencies    
 
-### Manual Dependency  
+### Manual   
 
 - `dependson` specifies which other chunks the current chunk relies on by setting a vector of chunk labels.  
     - Examples with integers:  
@@ -996,7 +1065,7 @@ Some issues with caching:
         - `dependson = c("data-generation", "data-transforamtion")`  
 - As a result, each time one of the cached chunks `"Chunk-1"`, `"Chunk-2"`, and `"Chunk-3"` are re-built, the current chunk will lose its cache and also be rebuilt!  
 
-### Automatic Dependency  
+### Automatic   
 
 Enter:  `autodep` chunk option and function `dep_auto()`  
 
