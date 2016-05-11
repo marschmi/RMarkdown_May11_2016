@@ -1,6 +1,6 @@
 ---
 title: "Creating Dynamic Documents with RMarkdown and Knitr"
-author: "Marian L. Schmidt"
+author: "Marian L. Schmidt, `@micro_marian`"
 date: "May 11th, 2016"
 output:
   html_document:
@@ -592,14 +592,10 @@ Chunk labels must be **unique IDs** in a document and are good for:
 
 - Generating external files such as images and cached documents.  
 - Chunk labels often are output when errors arise (more often for line of code).     
-- Navigating throughout long `.Rmd` documents.  **Marian's favorite**  
+- **Navigating throughout long `.Rmd` documents.**  
 
 ![A method of navigating through `.Rmd` files](Images/label_navigation.png)
 
-
-```{r error-chunk}
-x <- 
-```
 
 
 When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
@@ -623,9 +619,9 @@ Great website for exploring <a href="http://yihui.name/knitr/options/#chunk_opti
 > Challenge  
 > What happens when we run the following chunks?  
 
-    ```{r }  
+```{r }  
 
-    ```
+```
 
 
 
@@ -653,15 +649,144 @@ Global chunk options will be set for the rest of the document.  If you would lik
 
 ## Figures  
 
+**Knitr** makes producing figures really easy.  If analysis code within a chunk is supposed to produce a figure, it will just print out into the document.  
+
 Some knitr chunk options that relate to figures:  
 
 - `fig.width` and `fig.height`  
     - *Default:* `fig.width = 7`, `fig.height = 7`  
 - `fig.align`:  How to align the figure  
     - *Options include:* `"left"`, `"right"`, and `"center"`  
-- `fig.caption` will control whether there's a caption on not  
 - `fig.path`: A file path to the directory to where knitr should store the graphic output created by the chunk.  
-    - *Default:* `'figure/'`
+    - *Default:* `'figure/'`  
+- There's even a `fig.retina`(only for HTML output)
+
+```{r load-multiplot, eval = TRUE, echo = FALSE}
+# Multiple plot function
+#
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+
+Making a single figure:  
+
+With `fig.align = "center"`
+
+```{r single-fig-center, message = FALSE, fig.align = "center", fig.width = 4, fig.height = 4}
+ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept=mean(mtcars$mpg), col="red") 
+```
+
+With `fig.align = "right"`
+
+```{r single-fig-right, message = FALSE, fig.align = "right", fig.width = 4, fig.height = 4}
+ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept=mean(mtcars$mpg), col="red") 
+```
+
+
+With `fig.align = "left"`
+
+```{r single-fig-left, message = FALSE, fig.align = "left", fig.width = 4, fig.height = 4}
+ggplot(mtcars, aes(x = mpg)) + xlab("Miles per Gallon") +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept=mean(mtcars$mpg), col="red") 
+```
+
+
+
+```{r many-figs, message = FALSE}
+myplots <- list()  # new empty list
+for(i in 1:ncol(mtcars)){
+  col <- names(mtcars)[i]
+  ggp <- ggplot(mtcars, aes_string(x = col)) +
+    geom_histogram(bins = 30, fill = "cornflowerblue", color = "black") +
+    geom_vline(xintercept = mean(mtcars[[col]]), col = "red") 
+  myplots[[i]] <- ggp  # add each plot into plot list
+}
+multiplot(plotlist = myplots, cols = 4) # must load in multiplot function from the Rcookbook see http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+```
+
+
+## Tables
+
+Hand writing tables in Markdown can get tedious.  There's a few types of tables that are useful.  Here, we will use our previous example of a linear model on car weight and miles per gallon within the `mtcars` data.  
+
+In his <a href="http://kbroman.org/knitr_knutshell/pages/figs_tables.html">Knitr in a Knutshell</a>, Dr. Karl Broman introduces:  `kable`, `pander`, and `xtable` and I have enjoyed using the first two:  
+
+- `kable`: Within the **knitr** package - not many options but looks nice with ease. 
+- `pander`: Within the **pander** package - has many more options and customization.  Useful for bolding certain values (e.g. values below a threshold).  
+
+`kable` and `pander` tables are nice as they are useful for making non-interactive tables:
+
+
+```{r table-examples, eval = TRUE, echo = TRUE, message = FALSE}
+# Is there a relationship between the weight of a car and the miles per gallon?
+lm_mpg <- lm(mpg ~ wt, data = mtcars) # Run linear model predicting mpg based on wt
+coef_lm_mpg <- coef(summary(lm_mpg)) # Extract coefficients to table 
+kable(coef_lm_mpg) # kable table
+
+# Pander table
+# install.packages("pander") # install pander first
+library(pander)
+pander(coef_lm_mpg)
+```
+
+
+Recently, I discovered the **DT** package which makes the tables interactive in the HTML output.  Cool, huh? 
+
+```{r DT-example}
+# DT table = interactive
+# install.packages("DT") # install DT first
+library(DT)
+datatable(coef_lm_mpg)
+multiple_regression <- coef(summary(lm(mpg ~ ., data = mtcars))) 
+datatable(multiple_regression) 
+```
 
 
 
@@ -669,8 +794,8 @@ Some knitr chunk options that relate to figures:
 
 Spelling may not be our strong suit and as a result, we may need to check the spelling in our document.  There are two ways to check the spelling:  
 
-1. Click on the "ABC checkmark" to the left of the magnifying glass button in RStudio.  ![](Images/Rmd_output.png)  
-2. Use the `aspell()` function from the `utils` package.  However, it would be desirable to skip code chunks.  The `aspell()` function can take a filter function to skip certain lines in the files and can be used with the function `knit_filter()` which was designed to skip over code chunks in a file.  
+1. Click on the "ABC checkmark" to the left of the magnifying glass button in RStudio.  ![](Images/spell_check.png)  
+2. Use the `aspell()` function from the **utils** package.  However, it would be desirable to skip code chunks.  The `aspell()` function can take a filter function to skip certain lines in the files and can be used with the function `knit_filter()` which was designed to skip over code chunks in a file.  
 
 
 ## Knitr Themes

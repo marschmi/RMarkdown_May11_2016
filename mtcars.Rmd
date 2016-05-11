@@ -1,0 +1,88 @@
+---
+title: "Relationship of Car Weight and Gas Efficiency"
+author: "Marian L. Schmidt"
+date: "May 11, 2016"
+output: html_document
+---
+
+```{r set-global-options}
+knitr::opts_chunk$set(echo = TRUE, 
+                      eval = TRUE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      cache = TRUE,
+                      fig.path = "Figures/",
+                      fig.width = 5, 
+                      fig.height = 5,
+                      fig.align = "center")
+```
+
+
+```{r load-packages}
+library(ggplot2)
+library(dplyr)
+library(DT)
+library(plotly)
+library(knitr)
+```
+
+
+I predict that there will be a relationship between weight and miles per gallon.  
+
+I will test this by running a linear model with the mtcars dataset is within the R datasets.
+
+```{r mtcars-head}
+# What does the data look like?
+datatable(mtcars) # Interactive table 
+```
+
+
+
+# Is there a linear relationship between weight and miles per gallon?
+```{r linear-model}
+# Is there a relationship between the weight of a car and the miles per gallon?
+lm_mpg <- lm(mpg ~ wt, data = mtcars) # Run linear model predicting mpg based on wt
+coef_lm_mpg <- coef(summary(lm_mpg)) # Extract coefficients to table 
+kable(coef_lm_mpg) # Produce non-interactive table - function in knitr
+```
+
+It appears that with a gain in every **1000** pounds that there will be a **decrease** in fuel efficiency by `r abs(coef_lm_mpg[2])` miles per gallon
+
+
+
+```{r plotting}
+# Plot the relationship between weight and miles per gallon  
+plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + # 
+  geom_smooth(method = "lm") + theme_bw() + # add linear model and make black and white
+  xlab("Weight (1000lbs)") + ylab("Miles per Gallon") # Add axis labels  
+plot 
+ggplotly(plot) # Make the plot interactive
+```
+
+# Is there a relationship between transmission type (automatic vs manual) and miles per gallon?
+
+
+```{r transmission-ttest-asis, results = "asis"}
+mpg_auto <- mtcars[mtcars$am == 0,]$mpg # automatic transmission mileage
+mpg_manual <- mtcars[mtcars$am == 1,]$mpg # manual transmission mileage
+transmission_ttest <- t.test(mpg_auto, mpg_manual)
+transmission_ttest
+```
+
+
+
+```{r transmission-ttest-markup, results = "markup"}
+mpg_auto <- mtcars[mtcars$am == 0,]$mpg # automatic transmission mileage
+mpg_manual <- mtcars[mtcars$am == 1,]$mpg # manual transmission mileage
+transmission_ttest <- t.test(mpg_auto, mpg_manual)
+transmission_ttest
+```
+
+```{r }
+mpg_auto <- mtcars[mtcars$am == 0,]$mpg # automatic transmission mileage
+mpg_manual <- mtcars[mtcars$am == 1,]$mpg # manual transmission mileage
+transmission_ttest <- t.test(mpg_auto, mpg_manual)
+transmission_ttest
+```
+
+
