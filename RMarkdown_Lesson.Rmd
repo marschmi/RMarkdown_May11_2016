@@ -15,7 +15,7 @@ output:
       toc_depth: 3  
       smooth_scroll: true
 bibliography: 2016-05-09-R-packages.bib
-csl: nature.csl
+csl: the-isme-journal.csl
 ---
 
 ```{r set-global-options, echo = FALSE}
@@ -538,8 +538,6 @@ To insert an R code chunk, you can type it manually by typing ```` ```{r} ```` f
     ```
 
 
-
-
 Name the code chunk something meaningful as to what it is doing.  Below I have named the code chunk `10-random-numbers`:
 
     ```{r 10-random-numbers}
@@ -581,31 +579,54 @@ A code chunk looks like:
     ```
   
 
+
+**Best practices regarding code chunks:**  
+
+1. Always name/label your code chunks!  
+2. Instead of specifying the chunk options in every chunk, set the global chunk options at the beginning of the document.  More on this in a minute!  
+
+
+## Chunk Labels 
+
+Chunk labels must be **unique IDs** in a document and are good for:  
+
+- Generating external files such as images and cached documents.  
+- Chunk labels often are output when errors arise (more often for line of code).     
+- Navigating throughout long `.Rmd` documents.  **Marian's favorite**  
+
+![A method of navigating through `.Rmd` files](Images/label_navigation.png)
+
+
+```{r error-chunk}
+x <- 
+```
+
+
+When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
+
+Chunk labels must be unique throughout the document - otherwise there will be an error!    
+  
+  
+
 ## Chunk Options  
 
 Pressing tab when inside the braces will bring up code chunk options.
 
 
-- eval  
-- echo  
-- include  
-- message  
-- error  
-- 
+![Some Knitr Chunk Options](Images/chunk_options.png)
+
+There are too many chunk options to cover here
+
+Great website for exploring <a href="http://yihui.name/knitr/options/#chunk_options">Knitr Chunk Options</a>.  
 
 
+> Challenge  
+> What happens when we run the following chunks?  
 
-### Figures  
+    ```{r }  
 
-Some knitr chunk options that relate to figures:  
+    ```
 
-- `fig.width` and `fig.height`  
-    - *Default:* `fig.width = 7`, `fig.height = 7`  
-- `fig.align`:  How to align the figure  
-    - *Options include:* `"left"`, `"right"`, and `"center"`  
-- `fig.caption` will control whether there's a caption on not  
-- `fig.path`: A file path to the directory to where knitr should store the graphic output created by the chunk.  
-    - *Default:* `'figure/'`
 
 
 ## Global Options 
@@ -628,22 +649,20 @@ If you would like to save and store figures within a subdirectory within the pro
 
 Global chunk options will be set for the rest of the document.  If you would like to have a particular chunk be different from the global options, specify at the beginning of that particular chunk.
 
-> **Best practices regarding code chunks:**  
-
->1. Always name/label your code chunks!  
->- When naming the code chunk:  Use `-` or `_` in between words for code chunks labels instead of spaces.  This will help you and other users of your document to navigate through.  
->- Chunk labels must be unique throughout the document - otherwise there will be an error!  
->2. Instead of specifying the chunk options in every chunk, set the global chunk options at the beginning of the document with `knitr::opts_chunk$set()`.  
 
 
+## Figures  
 
+Some knitr chunk options that relate to figures:  
 
+- `fig.width` and `fig.height`  
+    - *Default:* `fig.width = 7`, `fig.height = 7`  
+- `fig.align`:  How to align the figure  
+    - *Options include:* `"left"`, `"right"`, and `"center"`  
+- `fig.caption` will control whether there's a caption on not  
+- `fig.path`: A file path to the directory to where knitr should store the graphic output created by the chunk.  
+    - *Default:* `'figure/'`
 
-## Chunk Labels 
-
-
-
-## Collapse Output (p. 51)
 
 
 ## Spell Check  
@@ -913,14 +932,17 @@ It's also possible to inlucde a bibliography file in the YAML header.  Bibliogra
 | Copac  | 	.copac  |
 | JSON citeproc  | 	.json  |
 
-An example YAML header with a bibliography file:
+To create a bibliography in RMarkdown, two files are needed:  
+
+1. A bibliography file with the **information** about each reference.  
+2. A citation style language (CSL) to describe how to **format** the reference 
+
+An example YAML header with a bibliography and a citation style language (CSL) file:
 
 ```
-output:  
-  html_document: 
-    toc: true 
-    toc_float: true
+output: html_document
 bibliography: bibliography.bib
+csl: nature.csl
 ```
 
 Check out the very helpful webpage by the R Core team on <a href="http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html" target="_blank">bibliographies and citations</a>.  
@@ -949,29 +971,34 @@ final words...
 
 **Citation Sylte Language (CSL)** is an XML-based language that identifies the format of citations and bibliographies. Reference management programs such as Zotero, Mendeley and Papers all use CSL.
 
-Search for your favorite journal and CSL in the <a href="https://www.zotero.org/styles" target="_blank">Zotero Style Repository</a>, which currently has 8,152 CSLs.  Is there a style that you're looking for 
+Search for your favorite journal and CSL in the <a href="https://www.zotero.org/styles" target="_blank">Zotero Style Repository</a>, which currently has 8,152 CSLs.  Is there a style that you're looking for that is not there?   
 
 ```
-output:  
-  html_document: 
-    toc: true 
-    toc_float: true
+output: html_document
 bibliography: bibliography.bib
+csl: nature.csl
 ```
+
+In the github repo for this workshop I have included `nature.csl` and `the-isme-journal.csl` to play around with.  Otherwise, download a citation from the Zotero Style Repository!
 
 
 ## Citations  
 
-Citations go inside square brackets `[ ]`and are separated by semicolons `;`. Each citation must have a key, composed of `@ + the citation identifier` from the database, and may optionally have a prefix, a locator, and a suffix. Here are some examples:
+Citations go inside square brackets `[ ]`and are separated by semicolons `;`. Each citation must have a key, composed of `@ + the citation identifier` from the database, and may optionally have a prefix, a locator, and a suffix.  To check what the citation key is for a reference, take a look at the `.bib` file.  Here in this file, you can also change key for each reference.  However, be careful that each ID is unique!   
 
 
+Here are some examples with their code:
 
-Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].
+- Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].  
+    - Code:  `Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].`  
+- I love making beautiful plots with ggplot2 [@R-ggplot2]  
+    - Code: `I love making beautiful plots with ggplot2 [@R-ggplot2]`  
+- Dr. Yuhui Xie's book about Dynamic Documents [@Xie2015] inspired me to host this workshop.  
+    - Code:  `Dr. Yuhui Xie's book about Dynamic Documents [@Xie2015] inspired me to host this workshop.`  
+- A great article in *Science* regarding biogeography of microbes asks readers to imagine their Alice in Wonderland to shrink down to understand the microbial world [@Green2008].   
+    - Code: `A great article in *Science* regarding biogeography of microbes asks readers to imagine their Alice in Wonderland to shrink down to understand the microbial world [@Green2008].`
 
-I love making beautiful plots with ggplot2 [@R-ggplot2]
-
-This is AWESOME!!!!!!!!!  
-
+The coolest thing is that it will only add the references for the articles you have cited!
 
 
 
