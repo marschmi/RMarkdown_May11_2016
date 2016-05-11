@@ -694,7 +694,7 @@ Some knitr chunk options that relate to figures:
     - *Options include:* `"left"`, `"right"`, and `"center"`  
 - `fig.path`: A file path to the directory to where knitr should store the graphic output created by the chunk.  
     - *Default:* `'figure/'`  
-- There's even a `fig.retina`(only for HTML output)
+- There's even a `fig.retina`(only for HTML output) for higher figure resolution with retina displays.  
 
 ```{r load-multiplot, eval = TRUE, echo = FALSE}
 # Multiple plot function
