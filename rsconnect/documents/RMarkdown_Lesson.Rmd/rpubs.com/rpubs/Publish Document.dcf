@@ -1,7 +1,7 @@
 name: Publish Document
 account: rpubs
 server: rpubs.com
-appId: https://api.rpubs.com/api/v1/document/180282/32d0db985c1e4ff1a3083af78cd5a2ce
-bundleId: https://api.rpubs.com/api/v1/document/180282/32d0db985c1e4ff1a3083af78cd5a2ce
-url: http://rpubs.com/marschmi/180282
-when: 1463102951.2919
+appId: https://api.rpubs.com/api/v1/document/180547/3d20fda38ef04bacb826d8264872d582
+bundleId: https://api.rpubs.com/api/v1/document/180547/3d20fda38ef04bacb826d8264872d582
+url: http://rpubs.com/publish/claim/180547/95f7e557be54497895c85337495cfcea
+when: 1463103866.62363

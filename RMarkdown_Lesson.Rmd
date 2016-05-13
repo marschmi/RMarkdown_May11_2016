@@ -68,22 +68,9 @@ There were three remote classrooms that tuned in:
 
 The **Github repository** for this lesson can <a href="https://github.com/marschmi/RMarkdown_May11_2016" target="_blank">be found here</a>.  
 
-
-
 ******************************************************************************************
 
-# Amazing Resources
-
-I could **not** have made this tutorial without these amazing resources:  
-
-1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a> website hosted by RStudio.  
-2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition [@Xie2015] and his <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> website.  
-    - A **BIG thank you** to Dr. Xie for writing the **Knitr** Package!!  
-3. Dr. Karl Broman's <a href="http://kbroman.org/knitr_knutshell/" target="_blank">"Knitr in a Knutshell"</a>.  
-4. <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheatsheets</a> released by RStudio.
-
-
-**************************************************************************************
+## Installation Instructions  
 
 **Before working through the workshop materials, please do the following in preparation:**
 
@@ -128,6 +115,20 @@ library("DT") # Interactive HTML tables
 5. If your packages loaded without any errors, then you are ready for the workshop!  
 
 If there were issues with the above packages please place a pink sticky to get help from a helper!
+
+
+******************************************************************************************
+
+# Amazing Resources
+
+I could **not** have made this tutorial without these amazing resources:  
+
+1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a> website hosted by RStudio.  
+2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition [@Xie2015] and his <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> website.  
+    - A **BIG thank you** to Dr. Xie for writing the **Knitr** Package!!  
+3. Dr. Karl Broman's <a href="http://kbroman.org/knitr_knutshell/" target="_blank">"Knitr in a Knutshell"</a>.  
+4. <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheatsheets</a> released by RStudio.
+
 
 ******************************************************************************************
 
