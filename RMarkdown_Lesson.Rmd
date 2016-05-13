@@ -1,22 +1,24 @@
 ---
 title: "Creating Dynamic Documents with RMarkdown and Knitr"
-author: "Marian L. Schmidt, `@micro_marian`"
+author: "By: Marian L. Schmidt, `@micro_marian`, marschmi at umich.edu"
 date: "May 11th, 2016"
-output:
+output:  
   html_document:
     code_folding: show
     highlight: haddock
     keep_md: yes
+    number_sections: yes
     theme: readable
-    toc: true
-    number_sections: true
+    toc: yes
     toc_float:
       collapsed: no
-      toc_depth: 3  
-      smooth_scroll: true
-bibliography: 2016-05-09-R-packages.bib
-csl: the-isme-journal.csl
+      smooth_scroll: yes
+      toc_depth: 3
+csl: Bib_Citation_Files/the-isme-journal.csl
+bibliography: Bib_Citation_Files/2016-05-09-R-packages.bib
 ---
+
+<!--BEGIN:  Set the global options and load packages-->
 
 ```{r set-global-options, echo = FALSE}
 knitr::opts_chunk$set(eval = TRUE, 
@@ -34,7 +36,6 @@ knitr::opts_chunk$set(eval = TRUE,
 ```
 
 
-
 ```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
 library(knitr)
 library(dplyr)
@@ -43,7 +44,48 @@ library(DT)
 library(plotly)
 ```
 
-**While you're waiting for the workshop to start, please do the following:**
+<!--END:  Set the global options and load packages-->
+
+
+******************************************************************************************
+
+# Welcome!
+
+
+This workshop was hosted on **May 11th, 2016** and has 2 supplemental materials available:   
+
+1. **Class notes** can be found on the workshop <a href="http://pad.software-carpentry.org/2016-05-11-RMarkdown" target="_blank">etherpad</a>.  
+2. This workshop was **recorded** live and is available on <a href="http://youtu.be/WFAHJ0NHOEQ" target="_blank">YouTube</a>.  Please be welcome to tune in on YouTube!  
+
+This tutorial was constructed as a part of Dr. C Titus Brown's <a href="http://dib-training.readthedocs.io/en/pub/index.html" target="_blank">Data Intensive Biology (DIB)</a> training program at the University of California, Davis.  The DIB training program hosts local + remote workshops covering topics in bioinformatic tools and data analysis.
+
+There were three remote classrooms that tuned in:  
+
+1. University of California, Davis  
+2. Simon Fraser University
+3. Ontario Institute for Cancer Research
+
+
+The **Github repository** for this lesson can <a href="https://github.com/marschmi/RMarkdown_May11_2016" target="_blank">be found here</a>.  
+
+
+
+******************************************************************************************
+
+# Amazing Resources
+
+I could **not** have made this tutorial without these amazing resources:  
+
+1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a> website hosted by RStudio.  
+2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition [@Xie2015] and his <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> website.  
+    - A **BIG thank you** to Dr. Xie for writing the **Knitr** Package!!  
+3. Dr. Karl Broman's <a href="http://kbroman.org/knitr_knutshell/" target="_blank">"Knitr in a Knutshell"</a>.  
+4. <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheatsheets</a> released by RStudio.
+
+
+**************************************************************************************
+
+**Before working through the workshop materials, please do the following in preparation:**
 
 1. Open up **RStudio**.  
 2. Install and download the **devtools** R package by running the following in the R console. 
@@ -86,37 +128,6 @@ library("DT") # Interactive HTML tables
 5. If your packages loaded without any errors, then you are ready for the workshop!  
 
 If there were issues with the above packages please place a pink sticky to get help from a helper!
-
-
-******************************************************************************************
-
-# Welcome!
-
-This tutorial was constructed as a part of Dr. C Titus Brown's <a href="http://dib-training.readthedocs.io/en/pub/index.html" target="_blank">Data Intensive Biology (DIB)</a> training program at the University of California, Davis.  The DIB training program is hosting several local+remote workshops covering topics in bioinformatic toos.
-
-Today, there is are three remote classrooms tuning in:  
-
-1. University of California, Davis  
-2. Simon Fraser University in British Columbia, Canada  
-3. Ontario Institute for Cancer Research
-
-In addition, the audio of this tutorial and the screen of the main instructor will be shared on YouTube.
-
-The Github repository for this website can <a href="https://github.com/marschmi/RMarkdown_May11_2016" target="_blank">be found here</a>.  
-
-
-
-******************************************************************************************
-
-# Amazing Resources
-
-I could **not** have made this tutorial without these amazing resources:  
-
-1. The <a href="http://rmarkdown.rstudio.com/index.html" target="_blank">RMarkdown</a> website hosted by RStudio.  
-2. Dr. Yuhui Xie's book:  <a href="http://www.amazon.com/Dynamic-Documents-knitr-Chapman-Hall/dp/1482203537" target="_blank">Dynamic Documents with R and Knitr</a> 2^nd^ Edition [@Xie2015] and his <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> website.
-3. Dr. Karl Broman's <a href="http://kbroman.org/knitr_knutshell/" target="_blank">"Knitr in a Knutshell"</a>.  
-4. <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheatsheets</a> released by RStudio.
-
 
 ******************************************************************************************
 
@@ -176,7 +187,7 @@ However, literate programming allows us to run the code and describe the code al
 
 I predict that there will be a relationship between weight and miles per gallon.  
 
-I will test this by running a linear model with the mtcars dataset is within the R datasets.
+I will test this by running a linear model with the mtcars dataset is within the R data sets.
 
 ```{r mtcars-show, fig.height=4.5, fig.width=4.5, cache = FALSE}
 # What does the data look like?
@@ -270,7 +281,7 @@ We will talk more about the syntax of Markdown after we introduce RMarkdown but 
 ******************************************************************************************
 
 # RMarkdown
-<a href="http://rmarkdown.rstudio.com/">RMarkdown</a> is a variant of Markdown that makes it easy to create dynamic documents, presentations and reports within RStudio.  It has embedded R code chunks to be used with **knitr** to make it easy to create reproducible (web-based) reports in the sense that they can be automatically regnerated when the underlying code it modified.    
+<a href="http://rmarkdown.rstudio.com/">RMarkdown</a> is a variant of Markdown that makes it easy to create dynamic documents, presentations and reports within RStudio.  It has embedded R code chunks to be used with **knitr** to make it easy to create reproducible (web-based) reports in the sense that they can be automatically regenerated when the underlying code it modified.    
 
 - RMarkdown lets you combine **Markdown** with images, links, tables, LaTeX, and actual code.
 - RStudio makes creating documents from RMarkdown easy  
@@ -317,7 +328,7 @@ A convenient tool for reproducible and dynamic reports!
     - Make beautifully formatted documents.
 - Do not need to worry about page breaks or figure placement.  
 - Consolidate your code and write up into a single file:  
-    + Slideshows, pdfs, html documents, word files  
+    + Slideshows, PDFs, html documents, word files  
 
 ## Simple Workflow  
 
@@ -338,7 +349,7 @@ Briefly, to make a report:
 1. Create `.Rmd` report that includes R code chunks and and markdown narratives (as indicated in steps above.).  
 2. Give the `.Rmd` file to `knitr` to execute the R code chunks and create a new `.md` file.  
     - <a href="http://yihui.name/knitr/" target="_blank">Knitr</a> is a package within R that allows the integration of R code into rendered RMarkdown documents such as HTML, latex, pdf, word, among other document types.  
-3. Give the `.md` file to **pandoc**, which will create the final rendered document (e.g. html, microsoft word, pdf, etc.).  
+3. Give the `.md` file to **pandoc**, which will create the final rendered document (e.g. html, Microsoft word, pdf, etc.).  
     - <a href="http://pandoc.org/" target="_blank">Pandoc</a> is a universal document converter and enables the conversion of one document type (in this case: `.Rmd`) to another (in this case: HTML)
 
 ![How an Rmd document is rendered](Images/Rmd_workflow.png)
@@ -391,7 +402,7 @@ The above example will create an HTML document.  However, the following options 
 - `ioslides_presentation` (HTML slideshow)  
 - and more...  
 
-Today, we will be focused on HTML files.  However, please be welcome to play around with creating word and pdf documents.  Presentation slides take on a slightly different syntax (e.g. to specify when one slide ends and the next one starts) and so there is a bit of markdown syntax specific to presentations that are beyond the focus of todays workshop.  
+Today, we will be focused on HTML files.  However, please be welcome to play around with creating word and pdf documents.  Presentation slides take on a slightly different syntax (e.g. to specify when one slide ends and the next one starts) and so there is a bit of markdown syntax specific to presentations that are beyond the focus of this workshop.  
 
 We will build on the details of YAML headers throughout the workshop.  
 
@@ -509,7 +520,7 @@ Imagine that you're reporting a p-value and you do not want to go back and add i
 
 This is really helpful when writing up the results section of a paper.  For example, you may have ran a bunch of statistics for your scientific questions and this would be a way to have **R** save that value in a variable name.  
 
-For example:  Is the gas mileage of automatic versus manual transmissions significantly different within the `mtcars` dataset?  
+For example:  Is the gas mileage of automatic versus manual transmissions significantly different within the `mtcars` data set?  
 
 ```{r eval = TRUE, echo = TRUE}
 mpg_auto <- mtcars[mtcars$am == 0,]$mpg # automatic transmission mileage
@@ -676,7 +687,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 For example, if you're working with a collaborator who does not want to see the code - you could set `eval = TRUE` and `echo = FALSE` so the code is evaluated but not shown.  In addition, you may want to use `message = FALSE` and `warning = FALSE` so your collaborator does not see any messages or warnings from R.  
 
-If you would like to save and store figures within a subdirectory within the project, `fig.path = "Figures/"`.  Here, the `"Figures/"` denotes a folder named *Figures* within the current directory where the figures produced within the document will be stored.  **Note:** by default figures are not saved.  
+If you would like to save and store figures within a sub directory within the project, `fig.path = "Figures/"`.  Here, the `"Figures/"` denotes a folder named *Figures* within the current directory where the figures produced within the document will be stored.  **Note:** by default figures are not saved.  
 
 Global chunk options will be set for the rest of the document.  If you would like to have a particular chunk be different from the global options, specify at the beginning of that particular chunk.
 
@@ -811,7 +822,7 @@ There's a few types of tables that are useful.  Here, we will use our previous e
 In his <a href="http://kbroman.org/knitr_knutshell/pages/figs_tables.html">Knitr in a Knutshell</a>, Dr. Karl Broman introduces:  `kable`, `pander`, and `xtable` and I have especially enjoyed using the first two:  
 
 - `kable`: Within the **knitr** package - not many options but looks nice with ease. 
-- `pander`: Within the **pander** package - has many more options and customization.  Useful for bolding certain values (e.g. values below a threshold).  
+- `pander`: Within the **pander** package - has many more options and customization.  Useful for bold-ing certain values (e.g. values below a threshold).  
 
 `kable` and `pander` tables are nice as they are useful for making non-interactive tables:
 
@@ -854,7 +865,7 @@ plot_ly(mtcars, x = wt, y = mpg,
 
 Spelling may not be our strong suit and as a result, we may need to check the spelling in our document.  There are two ways to check the spelling:  
 
-1. Click on the "ABC checkmark" to the left of the magnifying glass button in RStudio.  ![](Images/spell_check.png)  
+1. Click on the "ABC check mark" ![](Images/spell_check.png) to the left of the magnifying glass button in RStudio.    
 2. Use the `aspell()` function from the **utils** package.  However, it would be desirable to skip code chunks.  The `aspell()` function can take a filter function to skip certain lines in the files and can be used with the function `knit_filter()` which was designed to skip over code chunks in a file.  
 
 
@@ -916,7 +927,7 @@ As you may have noticed, each one of the code chunks in this document has an int
 When the knitr code chunk option `echo = TRUE` is specified (default = TRUE) the R code within the chunk will be included in the output document.  However, there may be times in which a user would like to exclude code entirely (`echo = FALSE`)
 
 -`code_folding:`  
-    - `code_folding: hide`:  Can inlucde R code but have it hidden by default.  
+    - `code_folding: hide`:  Can include R code but have it hidden by default.  
     - `code_folding: show`:  Shows R code and then the reader can click the ![](Images/hide.png) button to hide that chunk if they wish.  
     
 
@@ -1042,7 +1053,7 @@ Here's a link to learn more about the <a href="http://rmarkdown.rstudio.com/html
 
 Therefore, when rendering the document, cached chunks are skipped and the output created previously from these chunks will be (lazy-) loaded from the `cache` folder.
 
-However, if a single change to the chunk occurs (even a whitespace counts!) then `knitr` will acknowledge this change and will actually run the chunk when the document is rendered.
+However, if a single change to the chunk occurs (even a white space counts!) then `knitr` will acknowledge this change and will actually run the chunk when the document is rendered.
 
 
 The user can also set the path for where the cached files should be by using `cache.path`  
@@ -1057,7 +1068,7 @@ Some issues with caching:
 
 1. R is updated every few months.  `R.version.string`  
 2. External files that knitr does not track changes, may be updated and results will need to be re-run.  
-3. Somtimes a cached chunk might rely on objects from other cached chunk.  This can be a serious problem - so **<font color="red">be careful</font>**!  Therefore, we should cover chunk dependencies!  
+3. Sometimes a cached chunk might rely on objects from other cached chunk.  This can be a serious problem - so **<font color="red">be careful</font>**!  Therefore, we should cover chunk dependencies!  
 
 ## Chunk Dependencies    
 
@@ -1108,7 +1119,7 @@ So cool!
 
 ## Side Effects
 
-A **side effect** refers to a state change that occurs outside of a function that is not the reutrned value.  
+A **side effect** refers to a state change that occurs outside of a function that is not the returned value.  
 
 - `par()` and `options()` are side effects in the sense that they are not cached.  
 - Set all the global options in the first chunk and **never** cache that chunk.  
@@ -1120,7 +1131,7 @@ We can also turn off lazy-loading by setting the `cache.lazy = FALSE`.
 
 # Bibliography  
 
-It's also possible to inlucde a bibliography file in the YAML header.  Bibliography formats that are readable by Pandoc include the following:  
+It's also possible to include a bibliography file in the YAML header.  Bibliography formats that are readable by Pandoc include the following:  
 
 | Format | 	File extension   |
 |-----+-------|
@@ -1192,18 +1203,47 @@ Citations go inside square brackets `[ ]`and are separated by semicolons `;`. Ea
 
 Here are some examples with their code:
 
-- Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].  
+- Microbes control Earth's biogeochemical cycles  [@Falkowski2008].  
     - Code:  `Microbes contorl Earth's biogeochemical cycles  [@Falkowski2008].`  
 - I love making beautiful plots with ggplot2 [@R-ggplot2]  
     - Code: `I love making beautiful plots with ggplot2 [@R-ggplot2]`  
 - Dr. Yuhui Xie's book about Dynamic Documents [@Xie2015] inspired me to host this workshop.  
     - Code:  `Dr. Yuhui Xie's book about Dynamic Documents [@Xie2015] inspired me to host this workshop.`  
 - A great article in *Science* regarding biogeography of microbes asks readers to imagine their Alice in Wonderland to shrink down to understand the microbial world [@Green2008].   
-    - Code: `A great article in *Science* regarding biogeography of microbes asks readers to imagine their Alice in Wonderland to shrink down to understand the microbial world [@Green2008].`
+    - Code: `A great article in *Science* regarding biogeography of microbes asks readers to imagine they are Alice in Wonderland to and shrink down to understand the microbial world [@Green2008].`
 
-The coolest thing is that it will only add the references for the articles you have cited!
+The coolest thing is that the only references added to the document will be the ones that you have cited!  
 
 
+# Publishing on RPubs  
+
+Once you make a beautiful dynamic document you may wish to share it with others.  One option to share it with the world is to host it on <a href="https://rpubs.com/" target="_blank">RPubs</a>.  With RStudio, this makes is very easy!  Do the following:  
+
+1. Create your awesome `.Rmd` document.  
+2. Click the ![](Images/knit.png) button to render your HTML document to be published.  
+3. In the top right corner of the preview window, click the publish ![](Images/publish.png) button and follow the directions.  
+    - *Note:*  You will need to create an RPubs profile.  
+4. Once you have a profile you can choose the following:  
+    - The title of the document.  
+    - A description of the document.  
+    - The URL in which the website will be hosted.  
+        - *Note:*  The beginning of the URL will be:  **www.rpubs.com/your_username/name_of_your_choice**  
+        
+## Updating RPubs  
+
+If you make some changes to your document it is very easy to update the webpage.  Once you have rendered your edited document click the ![](Images/republish.png) button on the top right corner of the preview window.  The edited document will be in the same URL as the original document.  
+
+# Thank you  
+
+Thank you for participating in this tutorial.  
+
+If you have updates you would like to make to the lesson, please send <a href="https://github.com/marschmi/RMarkdown_May11_2016" target="_blank">me</a> a pull request.  Alternatively, if you have any questions, please e-mail me.  
+
+**Marian Schmidt**  
+**E-mail:** *marschmi at umich.edu*  
+**Twitter** `@micro_marian`  
+
+Good luck with your pursuit of dynamic documents!  
 
 # Session Info 
 ```{r session-info, results ='markup'}

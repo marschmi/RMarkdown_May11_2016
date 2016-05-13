@@ -1,0 +1,80 @@
+---
+title: "Notes from RMarkdown Workshop"
+author: "Marian L. Schmidt"
+date: "May 11, 2016"
+output: 
+  html_document: 
+    highlight: espresso
+    theme: spacelab
+    toc: yes
+---
+
+```{r global-options}
+knitr::opts_chunk$set(echo = TRUE, 
+                      eval = TRUE, 
+                      message = FALSE,
+                      warning = FALSE, 
+                      fig.path = "Figures/",
+                      fig.width = 12, 
+                      fig.height = 8)
+```
+
+# Today is great!!
+
+# load packages 
+```{r load-packages}
+library(knitr)
+library(DT)
+```
+
+
+```{r head-mtcars, cache=TRUE}
+kable(head(mtcars, n = 4))
+datatable(head(mtcars, n = nrow(mtcars)), options = list(pageLength = 5)) 
+```
+
+
+
+Hello!  **Hello**  __Hello!!__  
+
+*Hello*
+
+<!--This is a comment-->
+
+### I am coding 
+
+[https://www.rstudio.com](https://www.rstudio.com)
+
+1. list
+2. list  
+
+> 3. list  
+
+**Chocolate Chip cookie Recipe**  
+
+1. butter  
+2. sugar   
+    - A mix of brown & white sugar makes it more delicious  
+        - mix with butter before you add the eggs  
+3. eggs  
+4. vanilla
+Mix dry ingredients:
+flour, salt, baking soda
+chocolate chips
+
+
+I am curious what is 2^11^? It is `r  2^11`.
+
+
+
+```{r mean-mpg-mtcars, echo = FALSE, eval = FALSE}  
+mean_mpg <- mean(mtcars$mpg)
+mean_mpg
+```
+
+The average miles per gallon in `mtcars` is `r mean(mtcars$mpg)`.
+
+
+
+
+
